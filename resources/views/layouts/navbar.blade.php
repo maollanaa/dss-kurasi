@@ -1,11 +1,26 @@
-<nav class="navbar navbar-expand-lg navbar-light sticky-top py-2 px-0 mt-4">
-    <button class="navbar-toggler ml-3 d-md-none collapsed" type="button" data-toggle="collapse"
-        data-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+<nav class="navbar navbar-expand navbar-light sticky-top py-3 px-0 mt-3">
+    <button class="btn border-0 ml-3 d-md-none" type="button" data-toggle="collapse" data-target="#sidebarMenu"
+        aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
 
     <div class="w-100 px-4 d-none d-md-block">
-        <h3 class="mb-0">@yield('title', 'Dashboard')</h3>
+        <nav aria-label="breadcrumb" class="mb-0">
+            <ol class="breadcrumb mb-0 p-0 bg-transparent">
+                @if(trim(View::yieldContent('title', 'Dashboard')) === 'Dashboard')
+                    <li class="breadcrumb-item active" aria-current="page">
+                        Dashboard
+                    </li>
+                @else
+                    <li class="breadcrumb-item">
+                        Dashboard
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">
+                        @yield('title')
+                    </li>
+                @endif
+            </ol>
+        </nav>
     </div>
 
     <ul class="navbar-nav px-3 ml-auto">

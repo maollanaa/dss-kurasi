@@ -1,6 +1,6 @@
 <nav class="sidebar col-md-3 col-lg-2 d-md-block border-right collapse min-vh-100" id="sidebarMenu">
     <div class="sidebar-sticky d-flex flex-column">
-        <div class="text-center py-5 sidebar-brand">
+        <div class="text-center py-4 mt-3 sidebar-brand">
             <h5 class="font-weight-bold mb-0 text-primary">
                 <span class="brand-text">Kurasi UMKM</span>
             </h5>
@@ -106,9 +106,7 @@
         <div class="sidebar-close-wrapper mt-auto mb-4 py-3 d-flex d-md-none justify-content-center">
             <button
                 class="btn sidebar-close-btn rounded-circle bg-primary-light d-flex align-items-center justify-content-center shadow-none"
-                data-toggle="collapse"
-                data-target="#sidebarMenu"
-                aria-controls="sidebarMenu">
+                data-toggle="collapse" data-target="#sidebarMenu" aria-controls="sidebarMenu">
                 <span class="btn-icon">
                     <i data-lucide="x"></i>
                 </span>

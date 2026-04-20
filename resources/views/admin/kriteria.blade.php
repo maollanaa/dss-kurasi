@@ -1,6 +1,6 @@
 @extends('base.app')
 
-@section('title', 'Manajemen Kriteria')
+@section('title', 'Manajemen Kriteria & Parameter')
 
 @section('content')
     <div class="container-fluid p-0">
