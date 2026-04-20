@@ -2,7 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\KriteriaController;
 
 Route::get('/', function () {
     if (auth()->check()) {
@@ -16,5 +15,4 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [AuthController::class, 'dashboard'])->name('dashboard');
-    Route::get('/admin/kriteria', [KriteriaController::class, 'index'])->name('admin.kriteria');
 });

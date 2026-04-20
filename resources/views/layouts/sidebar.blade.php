@@ -18,7 +18,7 @@
                 </h6>
                 <li class="nav-item">
                     <a class="nav-link {{ request()->is('admin/kriteria*') ? 'active' : '' }}"
-                        href="{{ route('admin.kriteria') }}">
+                        href="{{ url('/admin/kriteria') }}">
                         <i class="bi bi-list-ul fa-fw"></i>
                         Kriteria & Parameter
                     </a>
