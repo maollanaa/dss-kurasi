@@ -1,0 +1,254 @@
+.kriteria-main {
+    background:
+        radial-gradient(circle at top right, rgba(13, 110, 253, 0.08), transparent 28%),
+        linear-gradient(180deg, #f7f9fc 0%, #eef2f7 100%);
+    min-height: 100vh;
+}
+
+.kriteria-content {
+    .card-header h5,
+    h6 {
+        color: #1f2a44;
+        font-weight: 600;
+    }
+
+    .kriteria-hero {
+        overflow: hidden;
+
+        .badge-light {
+            color: #2253a6;
+            background-color: rgba(255, 255, 255, 0.9);
+        }
+    }
+
+    .hero-panel {
+        background: rgba(255, 255, 255, 0.18);
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        border-radius: 18px;
+        padding: 20px;
+        backdrop-filter: blur(4px);
+    }
+
+    .hero-panel-label {
+        color: #fff;
+        font-size: 0.8rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        margin-bottom: 12px;
+        text-transform: uppercase;
+    }
+
+    .hero-panel-item {
+        color: rgba(255, 255, 255, 0.95);
+        display: flex;
+        align-items: center;
+        font-size: 0.95rem;
+    }
+
+    .hero-panel-item + .hero-panel-item {
+        margin-top: 10px;
+    }
+
+    .kpi-card .card-body {
+        min-height: 168px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .table thead th {
+        border-top: 0;
+        border-bottom: 1px solid #e9edf5;
+        color: #6b7280;
+        font-size: 0.76rem;
+        font-weight: 700;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+    }
+
+    .table td {
+        border-color: #eef1f6;
+        vertical-align: middle;
+    }
+
+    .font-weight-semibold {
+        font-weight: 600;
+    }
+
+    .parameter-type {
+        color: #355070;
+        font-weight: 600;
+    }
+
+    .target-pill {
+        background: #edf4ff;
+        border-radius: 999px;
+        color: #0d4aa5;
+        display: inline-flex;
+        font-weight: 700;
+        padding: 8px 14px;
+    }
+
+    .aspek-chip {
+        border-radius: 999px;
+        display: inline-flex;
+        font-size: 0.85rem;
+        font-weight: 600;
+        padding: 8px 12px;
+    }
+
+    .aspek-kualitas-produk {
+        background: #e8f7ef;
+        color: #1c7c54;
+    }
+
+    .aspek-kemasan {
+        background: #fff3e8;
+        color: #c56a1b;
+    }
+
+    .parameter-summary {
+        display: grid;
+        gap: 14px;
+    }
+
+    .parameter-summary-item {
+        align-items: center;
+        background: #f8faff;
+        border: 1px solid #e9edf5;
+        border-radius: 16px;
+        display: flex;
+        gap: 14px;
+        padding: 14px 16px;
+    }
+
+    .parameter-summary-icon,
+    .rubric-icon,
+    .rule-index,
+    .workflow-number {
+        align-items: center;
+        display: inline-flex;
+        flex-shrink: 0;
+        justify-content: center;
+    }
+
+    .parameter-summary-icon {
+        background: linear-gradient(135deg, #0d6efd, #3da5ff);
+        border-radius: 14px;
+        color: #fff;
+        font-size: 1.1rem;
+        height: 44px;
+        width: 44px;
+    }
+
+    .target-rules {
+        display: grid;
+        gap: 14px;
+    }
+
+    .target-rule-item {
+        align-items: flex-start;
+        display: flex;
+        gap: 12px;
+    }
+
+    .rule-index {
+        background: #172554;
+        border-radius: 50%;
+        color: #fff;
+        font-size: 0.82rem;
+        font-weight: 700;
+        height: 30px;
+        width: 30px;
+    }
+
+    .rubric-card {
+        background: linear-gradient(180deg, #ffffff 0%, #fbfcff 100%);
+        border: 1px solid #e8edf5;
+        border-radius: 18px;
+        height: 100%;
+        margin-bottom: 20px;
+        padding: 20px;
+    }
+
+    .rubric-icon {
+        background: #edf4ff;
+        border-radius: 16px;
+        color: #0d6efd;
+        font-size: 1.2rem;
+        height: 52px;
+        width: 52px;
+    }
+
+    .rubric-list {
+        color: #526071;
+        padding-left: 18px;
+    }
+
+    .rubric-list li + li {
+        margin-top: 8px;
+    }
+
+    .workflow {
+        display: grid;
+        gap: 16px;
+    }
+
+    .workflow-step,
+    .note-item {
+        align-items: flex-start;
+        display: flex;
+        gap: 14px;
+    }
+
+    .workflow-number {
+        background: linear-gradient(135deg, #0f172a, #334155);
+        border-radius: 14px;
+        color: #fff;
+        font-size: 0.85rem;
+        font-weight: 700;
+        height: 48px;
+        width: 48px;
+    }
+
+    .note-list {
+        display: grid;
+        gap: 16px;
+    }
+
+    .note-item {
+        background: #f8fafc;
+        border: 1px solid #e9edf5;
+        border-radius: 16px;
+        padding: 14px 16px;
+    }
+
+    .note-item i {
+        font-size: 1.1rem;
+        margin-top: 2px;
+    }
+
+    .dataTables_wrapper .dataTables_filter input {
+        border: 1px solid #d7dfeb;
+        border-radius: 10px;
+        margin-left: 8px;
+        padding: 6px 10px;
+    }
+
+    .dataTables_wrapper .pagination .page-link {
+        border-radius: 10px;
+        margin: 0 3px;
+    }
+}
+
+@media (max-width: 991.98px) {
+    .kriteria-content {
+        .hero-panel {
+            margin-top: 8px;
+        }
+
+        .kpi-card .card-body {
+            min-height: auto;
+        }
+    }
+}

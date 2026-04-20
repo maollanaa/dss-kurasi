@@ -1,0 +1,12 @@
+body {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+}
+
+@import 'layouts/sidebar';
+@import 'layouts/navbar';
+@import 'layouts/modal';
+@import 'layouts/card';
+@import 'pages/login';
+@import 'pages/dashboard';
+@import 'pages/kriteria';

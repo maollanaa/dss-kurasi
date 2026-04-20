@@ -1,0 +1,18 @@
+// Layout styling untuk Modal agar berada di tengah dan rounded
+.modal {
+    .modal-dialog {
+        display: flex;
+        align-items: center;
+        min-height: calc(100% - 16px);
+
+        @media (min-width: 576px) {
+            min-height: calc(100% - 56px);
+        }
+    }
+
+    .modal-content {
+        border-radius: 12px; // sedikit rounded
+        border: none;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    }
+}

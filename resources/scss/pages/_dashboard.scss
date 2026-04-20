@@ -1,0 +1,44 @@
+.dashboard-main {
+    background-color: #f3f3f5;
+}
+
+.dashboard-content {
+    h1 {
+        font-weight: 700;
+        color: black;
+        font-size: 1.75rem;
+        margin-bottom: 0;
+    }
+
+    .border-bottom {
+        border-bottom: 2px solid #e9ecef !important;
+        margin-bottom: 1.5rem !important;
+        padding-bottom: 1rem !important;
+    }
+
+    .summary-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 24px;
+        height: 100%;
+        // margin-bottom: 24px; // untuk spacing terhadap baris bawah jika diperlukan, sama seperti mb-4
+
+        @media (max-width: 767.98px) {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .col-custom-5-8 {
+        @media (min-width: 768px) {
+            flex: 0 0 62.5%;
+            max-width: 62.5%;
+        }
+    }
+
+    .col-custom-3-8 {
+        @media (min-width: 768px) {
+            flex: 0 0 37.5%;
+            max-width: 37.5%;
+        }
+    }
+}

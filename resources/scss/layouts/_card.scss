@@ -1,0 +1,75 @@
+// Styling dasar untuk Card (override bawaan Bootstrap)
+.card {
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    margin-bottom: 24px;
+    transition: all 0.3s ease;
+
+    .card-body {
+        padding: 16px 24px;
+    }
+
+    &:hover {
+        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+        /* Efek interaktif sedikit saat dihover */
+    }
+
+    // SubClass: Welcome Card / Kartu Sambutan
+    &.card-welcome {
+        background: linear-gradient(135deg, #4a90e2 0%, #357ebd 100%);
+        border: none;
+
+        .card-title {
+            font-weight: 600;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-text {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 14px;
+            line-height: 1.6;
+
+        }
+    }
+
+    // SubClass: Stat Card (jenis kartu lain dengan style dasar sama)
+    &.card-stat {
+        text-align: center;
+        background-color: #ffffff;
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #212529;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #6c757d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+    }
+}
+
+// .card-body {
+//             padding: 1.75rem;
+//         }
+
+//         .card-title {
+//             font-weight: 600;
+//             color: #344767;
+//             font-size: 1.25rem;
+
+//         }
+
+//         .card-text {
+//             color: #6c757d;
+//             line-height: 1.6;
+//             font-size: 0.95rem;
+//             margin-bottom: 0;
+//         }
