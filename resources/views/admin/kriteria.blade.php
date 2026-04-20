@@ -34,13 +34,13 @@
                             <div class="col-12">
                                 <div class="card border-0 shadow-sm overflow-hidden card-kriteria">
                                     <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center border-bottom-0">
-                                        <div class="d-flex align-items-center">
-                                            <div class="rounded-circle bg-primary-light p-2 mr-3 text-primary d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                        <div class="d-flex align-items-center kriteria-info mr-3">
+                                            <div class="rounded-circle bg-primary-light p-2 mr-3 text-primary d-flex align-items-center justify-content-center flex-shrink-0" style="width: 40px; height: 40px;">
                                                 <span class="font-weight-bold">{{ $item->kode_kriteria }}</span>
                                             </div>
-                                            <div>
-                                                <h6 class="mb-0 font-weight-bold text-dark">{{ $item->nama_kriteria }}</h6>
-                                                <small class="text-muted">{{ ucfirst(str_replace('_', ' ', $item->aspek)) }}</small>
+                                            <div class="kriteria-text">
+                                                <h6 class="mb-0 font-weight-bold text-dark text-truncate-custom">{{ $item->nama_kriteria }}</h6>
+                                                <small class="text-muted text-truncate-custom">{{ ucfirst(str_replace('_', ' ', $item->aspek)) }}</small>
                                             </div>
                                         </div>
                                         <div class="d-flex align-items-center">
@@ -50,7 +50,7 @@
                                                 <i data-lucide="chevron-up" class="icon-up"></i>
                                             </button>
                                             <button class="btn btn-sm btn-outline-primary ml-2 px-3 rounded-pill" data-toggle="modal" data-target="#modalEdit-{{ $item->id_kriteria }}">
-                                                <i data-lucide="pencil" class="mr-1"></i> Edit
+                                                <i data-lucide="pencil" class="mr-sm-1"></i><span class="d-none d-sm-inline">Edit</span>
                                             </button>
                                         </div>
                                     </div>
@@ -120,6 +120,17 @@
     .text-strikethrough { text-decoration: line-through; opacity: 0.6; }
     .font-weight-600 { font-weight: 600; color: #444; }
     .cursor-pointer { cursor: pointer; }
+
+    /* Text truncation for nama kriteria & aspek */
+    .kriteria-info { min-width: 0; flex: 1 1 0; overflow: hidden; }
+    .kriteria-text { min-width: 0; overflow: hidden; }
+    .text-truncate-custom {
+        display: block;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100%;
+    }
     
     .custom-switch .custom-control-input:checked ~ .custom-control-label::before {
         background-color: #0d6efd;
