@@ -26,7 +26,7 @@
                                 </div>
                                 <div class="col-md-3 text-md-right">
                                     <a href="#" class="btn btn-light text-primary font-weight-bold shadow-sm">
-                                        <i class="bi bi-play-circle mr-1"></i> Mulai Kurasi
+                                        <i data-lucide="play-circle" class="mr-1"></i> Mulai Kurasi
                                     </a>
                                 </div>
                             </div>

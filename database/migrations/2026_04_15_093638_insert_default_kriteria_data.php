@@ -95,6 +95,8 @@ return new class extends Migration {
 
     public function down(): void
     {
+        \Illuminate\Support\Facades\Schema::disableForeignKeyConstraints();
         DB::table('kriteria')->truncate();
+        \Illuminate\Support\Facades\Schema::enableForeignKeyConstraints();
     }
 };

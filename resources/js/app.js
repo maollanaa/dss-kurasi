@@ -1,9 +1,14 @@
 import './bootstrap';
+import { createIcons, icons } from 'lucide';
 
 document.addEventListener('DOMContentLoaded', function () {
+    // Initialize Lucide Icons
+    createIcons({ icons });
+
     if (typeof AOS !== 'undefined') {
         AOS.init();
     }
+    // ... rest of the code
 
     if (window.jQuery) {
         $('.select2').each(function () {

@@ -17,15 +17,15 @@
                         <span class="font-weight-bold" style="line-height: 1;">{{ auth()->user()->name }}</span>
                         <small style="font-size: 0.75rem;">{{ auth()->user()->email }}</small>
                     </div>
-                    <i class="bi bi-person-circle fs-4"></i>
+                    <i data-lucide="user-circle" class="ml-2"></i>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="#">
-                        <i class="bi bi-gear"></i> Pengaturan
+                        <i data-lucide="settings"></i> Pengaturan
                     </a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item text-danger" href="#" data-toggle="modal" data-target="#logoutModal">
-                        <i class="bi bi-box-arrow-right text-danger"></i> Logout
+                        <i data-lucide="log-out" class="text-danger"></i> Logout
                     </a>
                 </div>
             </li>

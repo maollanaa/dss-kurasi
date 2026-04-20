@@ -16,7 +16,11 @@ class Kriteria extends Model
         'aspek',
         'deskripsi_kriteria',
         'target_nilai',
-        'is_aktif',
         'urutan_tampil'
     ];
+
+    public function scales()
+    {
+        return $this->hasMany(KriteriaSkala::class, 'id_kriteria', 'id_kriteria');
+    }
 }

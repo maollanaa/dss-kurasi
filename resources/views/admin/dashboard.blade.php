@@ -31,8 +31,8 @@
                                 <a href="#" class="text-decoration-none">
                                     <div class="card card-stat h-100 shadow-sm border-0">
                                         <div class="card-body d-flex flex-column justify-content-center">
-                                            <div class="stat-value">{{ $totalKriteriaAktif }}</div>
-                                            <div class="stat-label">Kriteria Aktif</div>
+                                            <div class="stat-value">{{ $totalKriteria }}</div>
+                                            <div class="stat-label">Total Kriteria</div>
                                         </div>
                                     </div>
                                 </a>
@@ -73,7 +73,7 @@
                         <div class="col-12 col-md-4 col-custom-3-8 mt-4 mt-md-0">
                             <div class="card h-100 shadow-sm border-0">
                                 <div class="card-header bg-white font-weight-bold">
-                                    <i class="bi bi-pie-chart text-info mr-2"></i> Bobot Kriteria
+                                    <i data-lucide="pie-chart" class="text-info mr-2"></i> Bobot Kriteria
                                 </div>
                                 <div class="card-body p-3 d-flex flex-column align-items-center justify-content-center">
                                     @if(count($kriteriaBobots) > 0)
@@ -100,12 +100,12 @@
                             <div class="card h-100 shadow-sm border-0">
                                 <div
                                     class="card-header bg-white font-weight-bold d-flex justify-content-between align-items-center">
-                                    <span><i class="bi bi-trophy text-warning mr-2"></i> Top 5 Produk Kurasi Terakhir</span>
+                                    <span><i data-lucide="trophy" class="text-warning mr-2"></i> Top 5 Produk Kurasi Terakhir</span>
                                     <span class="badge badge-secondary">Periode: -</span>
                                 </div>
                                 <div class="card-body d-flex align-items-center justify-content-center">
                                     <div class="text-muted text-center py-5">
-                                        <i class="bi bi-inbox d-block mb-3 text-secondary" style="font-size: 3rem;"></i>
+                                        <i data-lucide="inbox" class="d-block mb-3 text-secondary" style="width: 48px; height: 48px; margin: 0 auto;"></i>
                                         Belum ada kurasi yang berjalan sebelumnya.
                                     </div>
                                 </div>
@@ -116,13 +116,12 @@
                         <div class="col-md-6 mb-4">
                             <div class="card h-100 shadow-sm border-0">
                                 <div class="card-header bg-white font-weight-bold">
-                                    <i class="bi bi-bar-chart-line text-primary mr-2"></i> Tren 5 Periode Terakhir Lolos
+                                    <i data-lucide="bar-chart-3" class="text-primary mr-2"></i> Tren 5 Periode Terakhir Lolos
                                     Kurasi
                                 </div>
                                 <div class="card-body d-flex align-items-center justify-content-center">
                                     <div class="text-muted text-center py-5">
-                                        <i class="bi bi-graph-down text-secondary d-block mb-3"
-                                            style="font-size: 3rem;"></i>
+                                        <i data-lucide="trending-down" class="text-secondary d-block mb-3" style="width: 48px; height: 48px; margin: 0 auto;"></i>
                                         Belum ada kurasi yang berjalan sebelumnya.
                                     </div>
                                 </div>

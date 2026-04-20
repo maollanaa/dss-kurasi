@@ -40,7 +40,7 @@ class AuthController extends Controller
         $user = Auth::user();
         
         if ($user->role === 'admin') {
-            $totalKriteriaAktif = \App\Models\Kriteria::where('is_aktif', true)->count();
+            $totalKriteria = \App\Models\Kriteria::count();
             
             // Get active AHP session
             $activeSesi = \Illuminate\Support\Facades\DB::table('ahp_sesi')->where('status_aktif', true)->first();
@@ -56,12 +56,11 @@ class AuthController extends Controller
                         $join->where('ahp_bobot.id_ahp_sesi', '=', -1); 
                     }
                 })
-                ->where('kriteria.is_aktif', true)
                 ->orderBy('kriteria.urutan_tampil')
                 ->select('kriteria.nama_kriteria', 'ahp_bobot.bobot_prioritas')
                 ->get();
 
-            return view('admin.dashboard', compact('totalKriteriaAktif', 'kriteriaBobots'));
+            return view('admin.dashboard', compact('totalKriteria', 'kriteriaBobots'));
         } elseif ($user->role === 'kurator') {
             return view('kurator.dashboard');
         }

@@ -7,7 +7,7 @@
             <li class="nav-item">
                 <a class="nav-link {{ request()->is('dashboard*') || request()->is('/') ? 'active' : '' }}"
                     href="{{ url('/dashboard') }}">
-                    <i class="bi bi-house fa-fw"></i>
+                    <i data-lucide="home"></i>
                     Dashboard
                 </a>
             </li>
@@ -19,13 +19,14 @@
                 <li class="nav-item">
                     <a class="nav-link {{ request()->is('admin/kriteria*') ? 'active' : '' }}"
                         href="{{ url('/admin/kriteria') }}">
-                        <i class="bi bi-list-ul fa-fw"></i>
+                        <i data-lucide="list"></i>
                         Kriteria & Parameter
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->is('admin/bobot*') ? 'active' : '' }}" href="{{ url('/admin/bobot') }}">
-                        <i class="bi bi-scales fa-fw"></i>
+                    <a class="nav-link {{ request()->is('admin/bobot*') ? 'active' : '' }}"
+                        href="{{ url('/admin/bobot') }}">
+                        <i data-lucide="scale"></i>
                         Bobot Kriteria
                     </a>
                 </li>
@@ -36,14 +37,14 @@
                 <li class="nav-item">
                     <a class="nav-link {{ request()->is('admin/periode*') ? 'active' : '' }}"
                         href="{{ url('/admin/periode') }}">
-                        <i class="bi bi-calendar fa-fw"></i>
+                        <i data-lucide="calendar"></i>
                         Periode Kurasi
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {{ request()->is('admin/produk*') ? 'active' : '' }}"
                         href="{{ url('/admin/produk') }}">
-                        <i class="bi bi-box fa-fw"></i>
+                        <i data-lucide="package"></i>
                         Data Produk
                     </a>
                 </li>
@@ -56,7 +57,7 @@
                 <li class="nav-item">
                     <a class="nav-link {{ request()->is('kurator/penilaian*') ? 'active' : '' }}"
                         href="{{ url('/kurator/penilaian') }}">
-                        <i class="bi bi-pencil-square fa-fw"></i>
+                        <i data-lucide="square-pen"></i>
                         Proses Kurasi
                     </a>
                 </li>
@@ -68,7 +69,7 @@
             <li class="nav-item">
                 <a class="nav-link {{ request()->is('hasil-kurasi*') ? 'active' : '' }}"
                     href="{{ url('/hasil-kurasi') }}">
-                    <i class="bi bi-bar-chart fa-fw"></i>
+                    <i data-lucide="bar-chart-3"></i>
                     Hasil Kurasi
                 </a>
             </li>
