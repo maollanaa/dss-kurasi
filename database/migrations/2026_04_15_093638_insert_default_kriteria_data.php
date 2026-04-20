@@ -1,15 +1,9 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
 
-return new class extends Migration
-{
-    /**
-     * Run the migrations.
-     */
+return new class extends Migration {
     public function up(): void
     {
         $kriteria = [
@@ -20,7 +14,6 @@ return new class extends Migration
                 'aspek' => 'kualitas_produk',
                 'deskripsi_kriteria' => 'Penilaian terhadap cita rasa produk, yang menjadi salah satu faktor utama penentu kualitas.',
                 'target_nilai' => 5,
-                'is_aktif' => true,
                 'urutan_tampil' => 1,
             ],
             [
@@ -30,7 +23,6 @@ return new class extends Migration
                 'aspek' => 'kualitas_produk',
                 'deskripsi_kriteria' => 'Kesesuaian harga produk dengan nilai yang ditawarkan dan daya beli target pasar.',
                 'target_nilai' => 5,
-                'is_aktif' => true,
                 'urutan_tampil' => 2,
             ],
             [
@@ -40,7 +32,6 @@ return new class extends Migration
                 'aspek' => 'kualitas_produk',
                 'deskripsi_kriteria' => 'Kemampuan UMKM dalam memproduksi barang secara kontinu dalam jumlah yang memadai.',
                 'target_nilai' => 4,
-                'is_aktif' => true,
                 'urutan_tampil' => 3,
             ],
             [
@@ -50,7 +41,6 @@ return new class extends Migration
                 'aspek' => 'kualitas_produk',
                 'deskripsi_kriteria' => 'Ketahanan produk atau masa berlaku produk yang aman untuk dikonsumsi.',
                 'target_nilai' => 4,
-                'is_aktif' => true,
                 'urutan_tampil' => 4,
             ],
             [
@@ -60,7 +50,6 @@ return new class extends Migration
                 'aspek' => 'kualitas_produk',
                 'deskripsi_kriteria' => 'Ketersediaan dan kejelasan kode produksi sebagai bentuk pelacakan (traceability) dan jaminan mutu.',
                 'target_nilai' => 5,
-                'is_aktif' => true,
                 'urutan_tampil' => 5,
             ],
             [
@@ -70,7 +59,6 @@ return new class extends Migration
                 'aspek' => 'kualitas_produk',
                 'deskripsi_kriteria' => 'Hasil dari pengujian nutrisi yang menampilkan kandungan gizi dan jaminan standar kualitas dari produk.',
                 'target_nilai' => 4,
-                'is_aktif' => true,
                 'urutan_tampil' => 6,
             ],
             [
@@ -80,7 +68,6 @@ return new class extends Migration
                 'aspek' => 'kemasan',
                 'deskripsi_kriteria' => 'Bahan yang digunakan untuk mengemas produk, meliputi aspek keamanan pangan dan kepraktisan.',
                 'target_nilai' => 5,
-                'is_aktif' => true,
                 'urutan_tampil' => 7,
             ],
             [
@@ -90,7 +77,6 @@ return new class extends Migration
                 'aspek' => 'kemasan',
                 'deskripsi_kriteria' => 'Estetika dan daya tarik visual dari Kemasan yang dapat menarik minat pembeli.',
                 'target_nilai' => 5,
-                'is_aktif' => true,
                 'urutan_tampil' => 8,
             ],
             [
@@ -100,7 +86,6 @@ return new class extends Migration
                 'aspek' => 'kemasan',
                 'deskripsi_kriteria' => 'Kelengkapan informasi pada label Kemasan, seperti nama produk, komposisi, berat bersih, dan legalitas pangan.',
                 'target_nilai' => 5,
-                'is_aktif' => true,
                 'urutan_tampil' => 9,
             ],
         ];
@@ -108,9 +93,6 @@ return new class extends Migration
         DB::table('kriteria')->insert($kriteria);
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         DB::table('kriteria')->truncate();

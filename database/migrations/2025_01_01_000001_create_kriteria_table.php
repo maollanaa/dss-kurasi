@@ -15,7 +15,6 @@ return new class extends Migration
             $table->enum('aspek', ['kualitas_produk', 'kemasan']);
             $table->text('deskripsi_kriteria')->nullable();
             $table->unsignedTinyInteger('target_nilai');
-            $table->boolean('is_aktif')->default(true);
             $table->unsignedInteger('urutan_tampil')->default(0);
             $table->dateTime('created_at')->nullable();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();

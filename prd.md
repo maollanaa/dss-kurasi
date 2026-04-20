@@ -15,6 +15,7 @@ Manajemen periode kurasi
 Manajemen data alternatif (produk UMKM) per periode
 Filter legalitas sebagai syarat awal (bukan perhitungan)
 Konfigurasi kriteria & parameter penilaian (skala 1–5)
+skala kriteria dapat diaktif/nonaktifkan
 Penetapan nilai target per kriteria
 Modul AHP: matriks perbandingan berpasangan → bobot kriteria + uji konsistensi (CR)
 Modul Profile Matching: nilai aktual → gap → bobot gap → skor akhir
@@ -52,16 +53,7 @@ US-04 — Sebagai Admin, saya ingin melihat daftar produk dalam satu periode bes
 
 4.3 Manajemen Kriteria & Parameter
 US-05 — Sebagai Admin, saya ingin menambahkan dan mengonfigurasi kriteria penilaian agar sistem dapat menyesuaikan standar kurasi yang digunakan.
-Acceptance Criteria:
-Field kriteria: nama, deskripsi, aspek (Kualitas Produk / Kemasan), jenis parameter, nilai target (1–5)
-Terdapat 4 jenis parameter:
-Range — input rentang nilai yang dikonversi ke skala 1–5 (contoh: harga, kapasitas produksi, masa kadaluarsa)
-Ya/Tidak — jawaban biner dikonversi ke skala (contoh: kode produksi)
-Pemenuhan Keadaan — tingkat pemenuhan kondisi tertentu (contoh: material kemasan, informasi label, uji nutrisi)
-Subjektif Berskala — penilaian langsung 1–5 oleh kurator (contoh: rasa, desain kemasan)
 
-Admin dapat mendefinisikan rubrik konversi untuk masing-masing jenis parameter
-Kriteria dapat diaktifkan/dinonaktifkan
 
 US-06 — Sebagai Admin, saya ingin menetapkan nilai target untuk setiap kriteria agar sistem memiliki profil ideal sebagai standar pemeringkatan.
 Acceptance Criteria:
