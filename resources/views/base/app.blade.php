@@ -44,6 +44,16 @@
     {{-- SCSS utama + JS utama --}}
     @vite(['resources/scss/app.scss', 'resources/js/app.js'])
 
+    {{-- Prevent Sidebar Flicker --}}
+    <script>
+        (function() {
+            const isMinimized = localStorage.getItem('sidebar-minimized') === 'true';
+            if (isMinimized && window.innerWidth >= 992) {
+                document.documentElement.classList.add('sidebar-minimized');
+            }
+        })();
+    </script>
+
     @stack('styles')
 </head>
 <body class="@yield('class-body')">

@@ -2,8 +2,8 @@
     background-color: white;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.05);
     z-index: 100;
-    transition: all 0.3s ease;
-    width: 20%;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    background: #fff;
 
     .sidebar-sticky {
         position: sticky;
@@ -11,47 +11,307 @@
         height: 100vh;
         overflow-x: hidden;
         overflow-y: auto;
+    }
 
+    // Mobile: fix sidebar so it doesn't scroll with the page
+    @media (max-width: 767.98px) {
+        position: fixed !important;
+        top: 0;
+        left: 0;
+        height: 100vh !important;
+        z-index: 1050;
+        overflow-y: auto;
+
+        .sidebar-sticky {
+            position: relative;
+            height: 100%;
+            overflow: hidden; // no inner scroll on mobile
+        }
+    }
+
+    .sidebar-brand {
+        white-space: nowrap;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+
+    // Navigation list — default padding (maximized / desktop)
+    .nav-list {
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+        transition: padding 0.3s ease;
     }
 
     .nav-link {
         font-weight: 500;
         color: #495057;
-        padding: 8px 16px;
+        padding: 10px 16px;
         margin-bottom: 4px;
-        border-radius: 4px;
+        border-radius: 12px;
         transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        white-space: nowrap;
 
-        i {
-            margin-right: 8px;
-            color: #6c757d;
-            transition: color 0.2s ease;
+        .nav-link-inner {
+            display: flex;
+            align-items: center;
+            
+            .nav-icon {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 6px;        
+                margin-right: 6px;   
+                flex-shrink: 0;
+
+                i, svg {
+                    width: 18px;
+                    height: 18px;
+                    display: block;
+                    margin: 0 !important;
+                    color: #6c757d;
+                    transition: color 0.2s ease;
+                }
+            }
+        }
+
+        .nav-text {
+            opacity: 1;
+            transition: opacity 0.3s ease;
+            white-space: nowrap;
         }
 
         &:hover,
         &:focus {
-            color: #007bff;
-            background-color: rgba(0, 123, 255, 0.05);
+            color: #0d6efd;
+            background-color: rgba(13, 110, 253, 0.05);
 
-            i {
-                color: #007bff;
-            }
+            .nav-icon i, .nav-icon svg { color: #0d6efd; }
         }
 
         &.active {
             color: #0d6efd;
             background-color: rgba(13, 110, 253, 0.1);
 
-            i {
-                color: #0d6efd;
-            }
+            .nav-icon i, .nav-icon svg { color: #0d6efd !important; }
         }
     }
 
     .sidebar-heading {
-        font-size: 12px;
+        font-size: 11px;
         font-weight: 700;
-        letter-spacing: 0.8px;
+        letter-spacing: 1px;
         color: #adb5bd;
+        text-transform: uppercase;
+        margin-top: 1.5rem;
+        margin-bottom: 0.5rem;
+        padding-left: 1rem;
+        white-space: nowrap;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+
+    .sidebar-toggle-wrapper,
+    .sidebar-close-wrapper {
+        transition: padding 0.3s ease;
+    }
+
+    .sidebar-toggle-btn,
+    .sidebar-close-btn {
+        width: 36px;
+        height: 36px;
+        padding: 0; 
+        border: none;
+        color: #0d6efd;
+        background-color: rgba(13, 110, 253, 0.08);
+        transition: all 0.2s ease;
+        flex-shrink: 0;
+
+        .btn-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px; // Centering via padding, no margin
+
+            i, svg {
+                width: 16px;
+                height: 16px;
+                display: block;
+                margin: 0 !important;
+            }
+        }
+
+        &:hover {
+            transform: scale(1.1);
+            background-color: rgba(13, 110, 253, 0.15);
+        }
+    }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+    .sidebar {
+        flex: 0 0 80px !important;
+        max-width: 80px !important;
+        min-width: 80px !important;
+        padding: 0 !important;
+
+        .sidebar-brand {
+            padding-top: 1.5rem !important;
+            padding-bottom: 1.5rem !important;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            .brand-text { display: none; }
+
+            &::after {
+                content: "K";
+                font-weight: 800;
+                font-size: 22px;
+                color: #0d6efd;
+            }
+        }
+
+        .nav-list {
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        .nav-link {
+            padding: 4px 0;
+            justify-content: center;
+            border-radius: 0;
+            margin: 0 0.5rem;
+
+            .nav-link-inner {
+                justify-content: center;
+                width: auto;
+
+                .nav-icon {
+                    margin-right: 0; // Remove text-gap; icon is now the full item
+
+                    i, svg { width: 22px; height: 22px; }
+                }
+            }
+
+            .nav-text { display: none; }
+        }
+
+        .sidebar-heading {
+            padding-left: 0;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+
+            span { display: none; }
+
+            &::after {
+                content: "•••";
+                letter-spacing: 2px;
+            }
+        }
+
+        // Hide the toggle button at tablet (it's auto-minimized)
+        .sidebar-toggle-wrapper { display: none !important; }
+    }
+
+    // Stretch main content to fill the rest
+    .dashboard-main {
+        margin-left: 0 !important;
+        flex: 1 !important;
+        max-width: none !important;
+        width: auto !important;
+    }
+
+    // Prevent row wrapping
+    .row:has(.sidebar),
+    .container-fluid > .row {
+        flex-wrap: nowrap !important;
+    }
+}
+
+
+@media (min-width: 992px) {
+    html.sidebar-minimized {
+        .row:has(.sidebar),
+        .container-fluid > .row {
+            flex-wrap: nowrap !important;
+        }
+
+        .sidebar {
+            flex: 0 0 80px !important;
+            max-width: 80px !important;
+            min-width: 80px !important;
+            padding: 0 !important;
+
+            .sidebar-brand {
+                padding: 1.5rem 0 !important;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                .brand-text { display: none; }
+
+                &::after {
+                    content: "K";
+                    font-weight: 800;
+                    font-size: 22px;
+                    color: #0d6efd;
+                }
+            }
+
+            .nav-list {
+                padding-left: 0;
+                padding-right: 0;
+            }
+
+            .nav-link {
+                padding: 4px 0;
+                justify-content: center;
+                border-radius: 0;
+                margin: 0 0.5rem;
+
+                .nav-link-inner {
+                    justify-content: center;
+                    width: auto;
+
+                    .nav-icon {
+                        margin-right: 0;
+
+                        i, svg { width: 22px; height: 22px; }
+                    }
+                }
+
+                .nav-text { display: none; }
+            }
+
+            .sidebar-heading {
+                padding-left: 0;
+                text-align: center;
+                display: flex;
+                justify-content: center;
+
+                span { display: none; }
+
+                &::after {
+                    content: "•••";
+                    letter-spacing: 2px;
+                }
+            }
+
+            .sidebar-toggle-wrapper {
+                justify-content: center;
+                padding-left: 0 !important;
+                padding-bottom: 1.5rem;
+            }
+        }
+
+        .dashboard-main {
+            margin-left: 0 !important;
+            flex: 1 !important;
+            max-width: none !important;
+            width: auto !important;
+        }
     }
 }
