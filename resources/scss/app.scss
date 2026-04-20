@@ -3,6 +3,7 @@ body {
   font-weight: 400;
 }
 
+@import 'layouts/breakpoints';
 @import 'layouts/sidebar';
 @import 'layouts/navbar';
 @import 'layouts/modal';

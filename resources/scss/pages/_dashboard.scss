@@ -23,20 +23,20 @@
         height: 100%;
         // margin-bottom: 24px; // untuk spacing terhadap baris bawah jika diperlukan, sama seperti mb-4
 
-        @media (max-width: 767.98px) {
+        @media (max-width: ($tablet-bkp)) {
             grid-template-columns: 1fr;
         }
     }
 
     .col-custom-5-8 {
-        @media (min-width: 768px) {
+        @media (min-width: $tablet-bkp) {
             flex: 0 0 62.5%;
             max-width: 62.5%;
         }
     }
 
     .col-custom-3-8 {
-        @media (min-width: 768px) {
+        @media (min-width: $tablet-bkp) {
             flex: 0 0 37.5%;
             max-width: 37.5%;
         }

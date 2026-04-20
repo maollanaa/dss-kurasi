@@ -14,7 +14,7 @@
     }
 
     // Mobile: fix sidebar so it doesn't scroll with the page
-    @media (max-width: 767.98px) {
+    @media (max-width: ($tablet-bkp)) {
         position: fixed !important;
         top: 0;
         left: 0;
@@ -149,7 +149,7 @@
     }
 }
 
-@media (min-width: 768px) and (max-width: 991.98px) {
+@media (min-width: $tablet-bkp) and (max-width: ($big-tablet-bkp)) {
     .sidebar {
         flex: 0 0 80px !important;
         max-width: 80px !important;
@@ -232,7 +232,7 @@
 }
 
 
-@media (min-width: 992px) {
+@media (min-width: $big-tablet-bkp) {
     html.sidebar-minimized {
         .row:has(.sidebar),
         .container-fluid > .row {

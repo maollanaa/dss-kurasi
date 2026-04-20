@@ -91,7 +91,7 @@
     margin-top: 20px;
 }
 
-@media (max-width: 767.98px) {
+@media (max-width: ($tablet-bkp)) {
     .login-left {
         min-height: auto;
         padding: 30px 25px;
