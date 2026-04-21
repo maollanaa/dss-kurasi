@@ -43,8 +43,8 @@
                     <span class="nav-text">Manajemen Kurasi</span>
                 </h6>
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->is('admin/periode*') ? 'active' : '' }}"
-                        href="{{ url('/admin/periode') }}">
+                    <a class="nav-link {{ request()->is('admin/kurasi*') ? 'active' : '' }}"
+                        href="{{ url('/admin/kurasi') }}">
                         <div class="nav-link-inner">
                             <span class="nav-icon"><i data-lucide="calendar"></i></span>
                             <span class="nav-text">Periode Kurasi</span>

@@ -13,7 +13,7 @@
                     </li>
                 @else
                     <li class="breadcrumb-item">
-                        Dashboard
+                        <a href="{{ route('dashboard') }}" style="color: inherit; text-decoration: none;">Dashboard</a>
                     </li>
                     <li class="breadcrumb-item active" aria-current="page">
                         @yield('title')

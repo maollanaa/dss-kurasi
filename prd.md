@@ -1,158 +1,134 @@
-PRD — Sistem Pendukung Keputusan Kurasi Produk Pangan UMKM
- 
- 1. Latar Belakang & Tujuan Produk
-Proses kurasi produk pangan UMKM untuk pasar modern di Kabupaten Sidoarjo saat ini masih dilakukan secara manual — semua kriteria diperlakukan setara tanpa bobot, perhitungan dilakukan akumulatif, dan rawan kesalahan saat jumlah produk besar. Hal ini menyebabkan hasil pemeringkatan kurang proporsional dan sulit dipertanggungjawabkan.
-Tujuan sistem adalah menyediakan platform web berbasis metode AHP (pembobotan kriteria) dan Profile Matching (pemeringkatan berdasarkan gap terhadap profil ideal) untuk menghasilkan rekomendasi kelayakan produk yang objektif, konsisten, dan transparan.
+# PRD — Sistem Pendukung Keputusan (DSS) Kurasi Produk UMKM
+## Kabupaten Sidoarjo
 
-2. Pengguna & Peran
-Role - Deskripsi
-Admin - Mengelola konfigurasi sistem: kriteria, parameter, nilai target, data produk, bobot AHP, dan periode kurasi
-Kurator - Mengisi nilai aktual produk per periode kurasi dan melihat hasil
+Sistem ini dirancang untuk mendigitalkan dan mengobjektifkan proses kurasi produk pangan UMKM di Kabupaten Sidoarjo menggunakan metode hybrid **AHP** (untuk pembobotan) dan **Profile Matching** (untuk pemeringkatan).
 
-3. Ruang Lingkup Sistem
-Dalam Scope:
-Manajemen periode kurasi
-Manajemen data alternatif (produk UMKM) per periode
-Filter legalitas sebagai syarat awal (bukan perhitungan)
-Konfigurasi kriteria & parameter penilaian (skala 1–5)
-skala kriteria dapat diaktif/nonaktifkan
-Penetapan nilai target per kriteria
-Modul AHP: matriks perbandingan berpasangan → bobot kriteria + uji konsistensi (CR)
-Modul Profile Matching: nilai aktual → gap → bobot gap → skor akhir
-Output: ranking produk + catatan evaluasi (gap negatif)
-History hasil kurasi per periode
+---
 
-Di luar Scope:
-Pemasaran, distribusi, atau penjualan produk
-Integrasi dengan sistem eksternal (BPOM, OSS, dll.)
-Aspek legalitas tidak masuk perhitungan AHP/PM
+## 1. Visi & Tujuan
+Proses kurasi manual seringkali subjektif dan sulit dipertanggungjawabkan. Sistem ini hadir untuk:
+- **Objektivitas**: Menghilangkan bias personal dalam penilaian.
+- **Transparansi**: Memberikan alasan logis (gap analisis) mengapa sebuah produk lolos atau tidak.
+- **Efisiensi**: Mempercepat proses perolehan hasil dari ribuan produk UMKM.
 
-4. Fitur & User Stories
-4.1 Manajemen Periode Kurasi
-US-01 — Sebagai Admin, saya ingin membuat periode kurasi baru agar setiap siklus kurasi tercatat secara terpisah.
-Acceptance Criteria:
-Form berisi: nama periode, tanggal mulai, dinas penanggung jawab
-Status periode: Draft → Berlangsung → Selesai
-Admin dapat melihat daftar semua periode kurasi beserta statusnya
-Admin membuat periode kurasi. Sistem secara otomatis akan mengikat (link) periode ini dengan Sesi AHP yang sedang aktif saat itu.
+---
 
-US-02 — Sebagai Admin, saya ingin melihat daftar periode kurasi beserta statusnya agar dapat memantau progres kurasi yang sedang dan sudah berjalan.
-Acceptance Criteria:
-Tabel menampilkan: nama periode, tanggal, dinas, jumlah produk, status
-Periode yang selesai menampilkan link ke hasil kurasi
+## 2. Peran Pengguna (User Roles)
 
-4.2 Manajemen Data Alternatif (Produk)
-US-03 — Sebagai Admin, saya ingin menambahkan produk UMKM ke dalam periode kurasi agar produk tersebut dapat dinilai oleh kurator.
-Acceptance Criteria:
-Form berisi: nama produk, merk, deskripsi singkat
-Checklist legalitas (multi-item): NIB, PIRT, Sertifikat Halal, dll.
-Produk yang tidak memenuhi semua item legalitas diberi status Tidak Lolos Legalitas dan tidak muncul dalam antrian penilaian kurator
-Produk yang memenuhi semua legalitas berstatus Siap Dikurasi
+| Peran | Tanggung Jawab Utama |
+| :--- | :--- |
+| **Admin** | Mengelola Kriteria, mengatur Bobot AHP, Manajemen Produk (Data Master), dan memantau seluruh Periode Kurasi. |
+| **Kurator** | Melakukan penilaian lapangan/aktual terhadap produk pada periode yang sedang berjalan. |
 
-US-04 — Sebagai Admin, saya ingin melihat daftar produk dalam satu periode beserta status legalitasnya agar dapat mengidentifikasi produk yang bisa lanjut ke tahap penilaian.
+---
 
-4.3 Manajemen Kriteria & Parameter
-US-05 — Sebagai Admin, saya ingin menambahkan dan mengonfigurasi kriteria penilaian agar sistem dapat menyesuaikan standar kurasi yang digunakan.
+## 3. Metodologi DSS (Logic Flow)
 
+Sistem menggunakan dua algoritma utama yang bekerja secara berurutan:
 
-US-06 — Sebagai Admin, saya ingin menetapkan nilai target untuk setiap kriteria agar sistem memiliki profil ideal sebagai standar pemeringkatan.
-Acceptance Criteria:
-Nilai target menggunakan skala 1–5
-Nilai target tersimpan dan digunakan dalam perhitungan Profile Matching
+### A. Analytical Hierarchy Process (AHP)
+Digunakan untuk menentukan **Bobot Kepentingan** setiap kriteria.
+1. **Pairwise Comparison**: Admin membandingkan kriteria A vs B (Skala Saaty 1-9).
+2. **Consistency Check**: Sistem menghitung Consistency Ratio (CR). Harus **≤ 0.1** untuk dianggap valid.
+3. **Output**: Nilai Prioritas (Eigenvector) yang akan menjadi pengali di tahap Profile Matching.
 
-4.4 Modul AHP (Pembobotan Kriteria)
-US-07 — Sebagai Admin, saya ingin mengisi matriks perbandingan berpasangan antar kriteria menggunakan skala Saaty (1–9) agar sistem dapat menghitung bobot masing-masing kriteria.
-Acceptance Criteria:
-Tampilan matriks n×n (n = jumlah kriteria aktif)
-Nilai diagonal = 1, sisi simetris otomatis terisi nilai reciprocal
-Dropdown atau input angka untuk tiap pasangan kriteria (nilai 1–9)
-Setelah disimpan, sistem otomatis menghitung:
+### B. Profile Matching
+Digunakan untuk menghitung **Ranking Produk** berdasarkan kesesuaian dengan profil ideal.
+1. **Gap Analysis**: `Gap = Nilai Aktual (Kurator) - Nilai Target (Admin)`.
+2. **Bobot Gap**: Mengonversi nilai Gap menjadi bobot (0 s/d 5) sesuai tabel standar.
+3. **Total Scoring**: `Final Score = Σ (Bobot Gap * Bobot AHP)`.
+4. **Ranking**: Produk diurutkan berdasarkan Score tertinggi.
 
-Normalisasi matriks
-Bobot (eigenvector) masing-masing kriteria
-λmax, CI, RI, CR
+---
 
-Hasil CR ditampilkan dengan indikator visual: ✅ Konsisten (CR ≤ 0.10) / ❌ Tidak Konsisten (CR > 0.10)
-Jika tidak konsisten, Admin diminta merevisi nilai perbandingan
-Seluruh data (matriks, bobot, CR) tersimpan ke database
-Bobot ini akan digunakan oleh semua periode kurasi baru hingga ada sesi AHP baru yang disahkan.
+## 4. Detil Modul & Fitur
 
-US-08 — Sebagai Admin, saya ingin melihat histori bobot AHP yang pernah disimpan agar dapat melacak perubahan prioritas kriteria dari waktu ke waktu.
-Admin dapat melihat daftar sesi AHP terdahulu. Sistem menjamin bahwa perubahan bobot di masa sekarang tidak akan mengubah hasil perhitungan periode di masa lalu karena referensi ID sesi tersimpan secara permanen di tiap tabel periode.
+### 🛠️ Modul 1: Fondasi Sistem (Core)
+Status: ✅ **DONE**
+- **Autentikasi**: Sistem login aman untuk Admin dan Kurator. Dilengkapi fitur *Remember Me* dan proteksi logout (modal konfirmasi).
+- **Dashboard Dynamic**: Tampilan berbeda untuk tiap role (Admin melihat statistik global, Kurator melihat tugas aktif).
+- **UI/UX Consistency**: Menggunakan Bootstrap 4 dengan SCSS kustom untuk tampilan premium.
 
-4.5 Proses Kurasi oleh Kurator
-US-09 — Sebagai Kurator, saya ingin melihat daftar periode kurasi yang perlu dikerjakan agar saya tahu tugas penilaian yang harus diselesaikan.
-Acceptance Criteria:
+### 📋 Modul 2: Manajemen Kriteria & Skala
+Status: ✅ **DONE**
+- **CRUD Kriteria**: Admin dapat menambah/edit kriteria (Contoh: "Rasa", "Harga", "Higienitas").
+- **Kategorisasi Aspek**: Setiap kriteria dikelompokkan ke dalam "Kualitas Produk" atau "Kemasan".
+- **Target Nilai (1-5)**: Admin menetapkan skor ideal (profil target) untuk setiap kriteria.
+- **Manajemen Skala (Rubrik)**: Setiap kriteria memiliki 5 tingkatan rubrik (1-5). Admin bisa mengaktifkan/nonaktifkan skala tertentu. Skala yang nonaktif tidak akan muncul di form kurator.
 
-Halaman awal kurator menampilkan CTA "Mulai Kurasi"
-Daftar periode dengan status Berlangsung ditampilkan
-Hanya produk berstatus Siap Dikurasi yang muncul dalam antrian penilaian
+### ⚖️ Modul 3: Kalkulasi AHP (Pembobotan)
+Status: ⏳ **PLANNED**
+- **Matriks Perbandingan**: Antarmuka berbentuk tabel $n \times n$ di mana Admin mengisikan tingkat kepentingan antar kriteria (Contoh: Rasa 3x lebih penting dari Kemasan).
+- **Auto-Reciprocal**: Jika Admin mengisi Rasa-Kemasan = 3, maka Kemasan-Rasa otomatis terisi 1/3.
+- **Uji Konsistensi (CR)**: Sistem menghitung $\lambda_{max}$, CI, dan CR. Jika CR > 0.1, sistem akan meminta Admin merevisi matriks karena tidak konsisten.
+- **Sesi AHP**: Setiap hasil perhitungan disimpan dalam satu "Sesi". Periode kurasi akan dikunci ke satu Sesi AHP tertentu agar perubahan bobot di masa depan tidak merusak history nilai masa lalu.
 
-US-10 — Sebagai Kurator, saya ingin mengisi nilai aktual untuk setiap kriteria per produk agar sistem dapat menghitung gap dan skor akhir.
-Acceptance Criteria:
-Kurator mengisi nilai aktual (1–5) berdasarkan parameter.
+### 📦 Modul 4: Manajemen Produk & Legalitas
+Status: ⏳ **PLANNED** (Schema Update Pending)
+- **Data Master Produk**: Menyimpan nama produk, brand, nama pemilik, dan foto produk.
+- **Filter Legalitas (Entry Barrier)**: Produk **WAJIB** memenuhi syarat berikut untuk bisa lanjut ke tahap penilaian:
+    1. **NIB** (Wajib Ada)
+    2. **Sertifikat Halal** (Wajib Ada)
+    3. **BPOM atau SP-PIRT** (Wajib ada salah satu, diperbolehkan keduanya).
+- **Status Produk**: Produk yang tidak lolos legalitas akan ditandai secara visual dan tidak akan masuk ke antrean penilaian Kurator. (is_aktif)    
 
-Rubrik konversi ditampilkan sebagai panduan di samping/bawah input
-Kurator dapat menyimpan progres sementara (draft) dan melanjutkan
-Indikator progres: berapa produk sudah dinilai dari total
+### ✍️ Modul 5: Manajemen Periode & Penilaian (Kurator)
+Status: ⏳ **PLANNED**
+- **Batching (Periode Kurasi)**: Admin membuat periode (Contoh: "Kurasi IKM Sidoarjo 2024"). Admin memilih produk mana saja yang masuk ke periode ini.
+- **Antrean Penilaian**: Kurator melihat daftar produk dalam periode aktif yang belum dinilai.
+- **Form Penilaian**: Input nilai (1-5) berdasarkan rubrik aktif. Form menampilkan panduan deskripsi di setiap pilihan nilai untuk meminimalisir kesalahan input.
+- **Progress Tracker**: Menampilkan persentase jumlah produk yang sudah vs belum dinilai oleh Kurator.
 
-US-11 — Sebagai Kurator, saya ingin menyelesaikan proses kurasi agar sistem memproses perhitungan dan mengunci data penilaian.
-Acceptance Criteria:
-Tombol "Selesaikan Kurasi" hanya aktif jika semua produk sudah dinilai
-Konfirmasi sebelum finalisasi
-Setelah konfirmasi, sistem menjalankan kalkulasi AHP-Profile Matching secara otomatis
-Status periode berubah menjadi Selesai
+### 📊 Modul 6: Hasil, Ranking & Laporan
+Status: ⏳ **PLANNED**
+- **Mesin Perhitungan Profile Matching**: Sistem menghitung Gap (Aktual - Target), mengonversinya ke Bobot Gap, lalu mengalikannya dengan Bobot AHP untuk mendapatkan skor akhir.
+- **Leaderboard**: Tabel ranking produk dari skor tertinggi ke terendah.
+- **Catatan Evaluasi**: Produk yang mendapatkan nilai di bawah target akan mendapatkan catatan otomatis ("Perlu perbaikan di aspek X").
+- **Export PDF**: Generasi laporan resmi per periode yang memuat data statistik, bobot yang digunakan, dan tabel ranking lengkap.
 
-4.6 Kalkulasi AHP-Profile Matching (Background)
-US-12 — Sebagai sistem, saya ingin mengeksekusi kalkulasi setelah kurator menyelesaikan penilaian agar hasil ranking tersedia secara otomatis.
-Acceptance Criteria (alur perhitungan):
-Normalisasi data alternatif: nilai input kurator dikonversi ke skala 1–5 sesuai rubrik
-Perhitungan Gap: Gap = Nilai Aktual − Nilai Target per kriteria per produk
-Konversi Gap ke Bobot Gap (tabel standar):
-Gap -> Bobot
-0  -> 5
-1  -> 4.5
--1 -> 4
-2  -> 3.5
--2 -> 3
-3  -> 2.5
--3 -> 2
-4  -> 1.5
--4 -> 1
-5  -> 0.5
--5 -> 0
+---
 
-Skor Akhir: Nilai Total = Σ (Bobot Gap × Bobot AHP) untuk semua kriteria
-Ranking: produk diurutkan dari skor tertinggi ke terendah
-Catatan Evaluasi: kriteria dengan gap negatif per produk ditandai sebagai "perlu perbaikan di kriteria yg negatif gap"
-Semua hasil disimpan ke database
+## 5. Development Roadmap (Next Steps)
 
-4.7 Hasil & Laporan Kurasi
-US-13 — Visualisasi Ranking: Menampilkan tabel produk dari skor tertinggi ke terendah beserta catatan evaluasi (gap negatif).
+1. **Phase 1**: Update Database (Alternatif) & Implementasi CRUD Produk UMKM.
+2. **Phase 2**: Modul Filter Legalitas & Manajemen Periode.
+3. **Phase 3**: Kalkulasi AHP (Matriks & Konsistensi).
+4. **Phase 4**: Form Penilaian Kurator & Integrasi Profile Matching.
+5. **Phase 5**: Reporting & Export PDF.
 
-Sebagai Admin dan Kurator, saya ingin melihat hasil kurasi berupa ranking produk dan catatan evaluasi agar dapat memberikan rekomendasi yang dapat dipertanggungjawabkan.
-Acceptance Criteria:
-Halaman hasil menampilkan:
-Informasi periode (nama, tanggal, dinas)
-Tabel ranking: No. Urut, Nama Produk, Merk, Skor Akhir, Status Rekomendasi
-Filter/sort berdasarkan ranking atau nama produk
+---
 
-Detail per produk menampilkan:
-Skor per kriteria (bobot gap × bobot AHP)
-Catatan evaluasi: daftar kriteria dengan gap negatif + keterangan perbaikan yang diperlukan
+## 6. Alur Data & Arsitektur Database
 
-US-14 — Sebagai Admin dan Kurator, saya ingin mengakses history hasil kurasi dari periode sebelumnya agar dapat membandingkan perkembangan produk UMKM dari waktu ke waktu.
+### A. Lifecycle Produk (Data Flow)
 
-US-15 — Export PDF :
-Sebagai Admin/Kurator, saya ingin mengunduh laporan hasil kurasi ke dalam format PDF.
-Acceptance Criteria:
-PDF berisi Header (Nama Periode, Tanggal, Penanggung Jawab).
-Tabel ringkasan bobot kriteria yang digunakan (referensi Sesi AHP).
-Tabel ranking lengkap (Nama Produk, Skor Akhir, Status).
-Lampiran detail gap per produk untuk kriteria yang tidak memenuhi target.
+```mermaid
+graph TD
+    A[Admin: Tambah Kriteria & Target] --> B[Admin: Sesi AHP & Hitung Bobot]
+    B --> C[Admin: Daftarkan Produk & Pemilik]
+    C --> D{Cek Legalitas Produk}
+    D -- Gagal NIB/Halal/BPOM-PIRT --> E[Status: Tidak Lolos Legalitas]
+    D -- Lolos Syarat Wajib --> F[Admin: Masukkan ke Periode Kurasi]
+    F --> G[Kurator: Input Nilai Aktual 1-5]
+    G --> H[Sistem: Hitung Gap & Bobot Gap]
+    H --> I[Sistem: Hitung Skor Final & Ranking]
+    I --> J[Hasil: Laporan & Export PDF]
+```
 
+### B. Arsitektur Tabel Core
 
-Tech Stack:
-Backend : PHP + Laravel (MVC)
-Frontend: Blade + Bootstrap 4 + SCSS
-Database: MySQL
+| Tabel | Fungsi dalam DSS | Keterangan |
+| :--- | :--- | :--- |
+| `kriteria` | Master data parameter penilaian. | Menyimpan `target_nilai` (Profil Ideal). |
+| `ahp_bobot` | Menyimpan hasil prioritas kriteria. | Hasil dari perbandingan berpasangan. |
+| `alternatif` | Data master produk UMKM. | Ditambahkan `nama_pemilik` & `foto_produk`. |
+| `penilaian_kurasi`| Transaksi nilai dari Kurator. | Menghubungkan Produk -> Kriteria -> Nilai. |
+| `hasil_kurasi` | Output akhir perhitungan. | Menyimpan `skor_final` dan `peringkat`. |
+
+---
+
+## 7. Tech Stack
+- **Backend**: Laravel 11.x (PHP 8.2+)
+- **Frontend**: Blade, Bootstrap 4, SCSS, Lucide Icons
+- **Build Tool**: Vite
+- **Database**: MySQL
