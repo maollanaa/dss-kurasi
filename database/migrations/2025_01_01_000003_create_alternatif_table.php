@@ -16,6 +16,7 @@ return new class extends Migration
             $table->boolean('is_aktif')->default(true);
             $table->dateTime('created_at')->nullable();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
+            
         });
     }
 
