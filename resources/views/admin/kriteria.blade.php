@@ -123,11 +123,8 @@
 
 @push('styles')
 <style>
-    .bg-primary-light { background-color: rgba(13, 110, 253, 0.1); }
     .card-kriteria { transition: all 0.3s ease; border-radius: 12px; }
     .card-kriteria:hover { transform: translateY(-3px); }
-    .uppercase { text-transform: uppercase; }
-    .tracking-wider { letter-spacing: 0.05em; }
     .text-strikethrough { text-decoration: line-through; opacity: 0.6; }
     .font-weight-600 { font-weight: 600; color: #444; }
     .cursor-pointer { cursor: pointer; }

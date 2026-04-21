@@ -13,7 +13,7 @@
         overflow-y: auto;
     }
 
-    // Mobile: slide in/out via translateX — no Bootstrap collapse
+    // Mobile specific styles
     @media (max-width: ($tablet-bkp)) {
         position: fixed !important;
         top: 0;
@@ -21,12 +21,9 @@
         height: 100vh !important;
         z-index: 1050;
         overflow-y: auto;
-        // Hidden by default — slid fully off-screen to the left
         transform: translateX(-100%);
-        // Same easing as the general sidebar transition
         transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 
-        // Visible state toggled by JS
         &.sidebar-open {
             transform: translateX(0);
         }
@@ -44,7 +41,6 @@
         transition: all 0.3s ease;
     }
 
-    // Navigation list — default padding (maximized / desktop)
     .nav-list {
         padding-left: 12px;
         padding-right: 12px;
@@ -141,7 +137,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 8px; // Centering via padding, no margin
+            padding: 8px;
 
             i, svg {
                 width: 16px;
@@ -156,26 +152,9 @@
             background-color: rgba(13, 110, 253, 0.15);
         }
     }
-}
 
-// ── Mobile backdrop overlay ──────────────────────────────────────────────────
-.sidebar-backdrop {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.4);
-    z-index: 1049; // just below sidebar z-index
-    opacity: 0;
-    transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-
-    &.backdrop-visible {
-        display: block;
-        opacity: 1;
-    }
-}
-
-@media (min-width: $tablet-bkp) and (max-width: ($big-tablet-bkp)) {
-    .sidebar {
+    // Tablet (Auto-minimized)
+    @media (min-width: $tablet-bkp) and (max-width: ($big-tablet-bkp)) {
         flex: 0 0 80px !important;
         max-width: 80px !important;
         min-width: 80px !important;
@@ -214,8 +193,7 @@
                 width: auto;
 
                 .nav-icon {
-                    margin-right: 0; // Remove text-gap; icon is now the full item
-
+                    margin-right: 0;
                     i, svg { width: 22px; height: 22px; }
                 }
             }
@@ -237,34 +215,14 @@
             }
         }
 
-        // Hide the toggle button at tablet (it's auto-minimized)
         .sidebar-toggle-wrapper { display: none !important; }
     }
 
-    // Stretch main content to fill the rest
-    .dashboard-main {
-        margin-left: 0 !important;
-        flex: 1 !important;
-        max-width: none !important;
-        width: auto !important;
-    }
-
-    // Prevent row wrapping
-    .row:has(.sidebar),
-    .container-fluid > .row {
-        flex-wrap: nowrap !important;
-    }
-}
-
-
-@media (min-width: $big-tablet-bkp) {
-    html.sidebar-minimized {
-        .row:has(.sidebar),
-        .container-fluid > .row {
-            flex-wrap: nowrap !important;
-        }
-
-        .sidebar {
+    // Desktop Toggled Minimized
+    @media (min-width: $big-tablet-bkp) {
+        // We use :host or parent selector pattern if available, but in SCSS:
+        // html.sidebar-minimized .sidebar is better written as:
+        @at-root html.sidebar-minimized & {
             flex: 0 0 80px !important;
             max-width: 80px !important;
             min-width: 80px !important;
@@ -303,7 +261,6 @@
 
                     .nav-icon {
                         margin-right: 0;
-
                         i, svg { width: 22px; height: 22px; }
                     }
                 }
@@ -330,6 +287,46 @@
                 padding-left: 0 !important;
                 padding-bottom: 24px;
             }
+        }
+    }
+}
+
+// Mobile backdrop overlay
+.sidebar-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 1049;
+    opacity: 0;
+    transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
+    &.backdrop-visible {
+        display: block;
+        opacity: 1;
+    }
+}
+
+// Global layout adjustments for minimized sidebar
+@media (min-width: $tablet-bkp) and (max-width: ($big-tablet-bkp)) {
+    .dashboard-main {
+        margin-left: 0 !important;
+        flex: 1 !important;
+        max-width: none !important;
+        width: auto !important;
+    }
+
+    .row:has(.sidebar),
+    .container-fluid > .row {
+        flex-wrap: nowrap !important;
+    }
+}
+
+@media (min-width: $big-tablet-bkp) {
+    html.sidebar-minimized {
+        .row:has(.sidebar),
+        .container-fluid > .row {
+            flex-wrap: nowrap !important;
         }
 
         .dashboard-main {

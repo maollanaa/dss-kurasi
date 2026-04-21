@@ -21,6 +21,12 @@ Route::middleware('auth')->group(function () {
     Route::post('/admin/kriteria/{id}', [\App\Http\Controllers\KriteriaController::class, 'update'])->name('admin.kriteria.update');
     Route::post('/admin/kriteria/skala/toggle', [\App\Http\Controllers\KriteriaController::class, 'toggleSkala'])->name('admin.kriteria.toggle-skala');
     Route::post('/admin/kriteria/skala/update', [\App\Http\Controllers\KriteriaController::class, 'updateSkala'])->name('admin.kriteria.update-skala');
+    
+    // User Management
+    Route::get('/admin/user', [\App\Http\Controllers\UserController::class, 'index'])->name('admin.user');
+    Route::post('/admin/user', [\App\Http\Controllers\UserController::class, 'store'])->name('admin.user.store');
+    Route::post('/admin/user/{id}/update', [\App\Http\Controllers\UserController::class, 'update'])->name('admin.user.update');
+    Route::post('/admin/user/{id}/delete', [\App\Http\Controllers\UserController::class, 'destroy'])->name('admin.user.delete');
 
     // Produk Management
     Route::get('/admin/produk', [\App\Http\Controllers\ProdukController::class, 'index'])->name('admin.produk');

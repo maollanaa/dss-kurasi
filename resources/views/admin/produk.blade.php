@@ -181,26 +181,9 @@
 @push('styles')
 <style>
     .bg-danger-light { background-color: rgba(220, 53, 69, 0.1); }
-    .nav-link-inner { display: flex; align-items: center; }
     .product-img-wrapper img { object-fit: cover; }
     .btn-white { background-color: #fff; color: #6c757d; }
     .btn-white:hover { background-color: #f8f9fa; color: #495057; }
-    .font-weight-500 { font-weight: 500; }
-    .tracking-wider { letter-spacing: 0.05em; }
-
-    /* Custom Table Styling */
-    #tableProduk_wrapper .dataTables_length, 
-    #tableProduk_wrapper .dataTables_filter {
-        padding: 1.25rem 1.5rem;
-    }
-    #tableProduk_wrapper .dataTables_info, 
-    #tableProduk_wrapper .dataTables_paginate {
-        padding: 1rem 1.5rem;
-    }
-    .page-item.active .page-link {
-        background-color: #0d6efd;
-        border-color: #0d6efd;
-    }
 </style>
 @endpush
 

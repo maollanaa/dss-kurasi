@@ -21,7 +21,6 @@
         grid-template-columns: repeat(2, 1fr);
         gap: 24px;
         height: 100%;
-        // margin-bottom: 24px; // untuk spacing terhadap baris bawah jika diperlukan, sama seperti mb-4
 
         @media (max-width: ($tablet-bkp)) {
             grid-template-columns: 1fr;

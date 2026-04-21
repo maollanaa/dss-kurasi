@@ -38,6 +38,14 @@
                         </div>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->is('admin/user*') ? 'active' : '' }}" href="{{ url('/admin/user') }}">
+                        <div class="nav-link-inner">
+                            <span class="nav-icon"><i data-lucide="users"></i></span>
+                            <span class="nav-text">Kelola Pengguna</span>
+                        </div>
+                    </a>
+                </li>
 
                 <h6 class="sidebar-heading mt-4 mb-1 text-muted">
                     <span class="nav-text">Manajemen Kurasi</span>

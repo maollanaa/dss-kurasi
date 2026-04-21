@@ -21,7 +21,7 @@
                                 <div class="col-md-9 mb-3 mb-md-0">
                                     <h5 class="card-title"> Selamat datang di Dashboard Kurator</h5>
                                     <p class="card-text mb-0">Sebagai kurator, Anda berperan untuk mengevaluasi dan
-                                        memberikan penilaian kelayakan secara objektif kepada produk UMKM berdasarkan
+                                        memberikan +penilaian kelayakan secara objektif kepada produk UMKM berdasarkan
                                         standar yang sudah ditentukan.</p>
                                 </div>
                                 <div class="col-md-3 text-md-right">

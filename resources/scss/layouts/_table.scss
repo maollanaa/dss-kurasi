@@ -1,0 +1,211 @@
+// DataTables & Table Styling
+.table {
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100% !important;
+
+    thead th {
+        border-bottom: 2px solid #f3f3f5;
+        font-weight: 700;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        letter-spacing: 0.05em;
+        color: #8898aa;
+        padding: 1.25rem 1rem;
+        background-color: #f8f9fe;
+        white-space: nowrap;
+
+        &:first-child { border-top-left-radius: 12px; }
+        &:last-child { border-top-right-radius: 12px; }
+    }
+
+    tbody {
+        td {
+            padding: 1.15rem 1rem;
+            vertical-align: middle;
+            border-top: 1px solid #f1f3f9;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+        }
+
+        tr {
+            transition: all 0.2s ease;
+
+            &:hover {
+                background-color: #f8faff;
+                td {
+                    background-color: transparent;
+                }
+            }
+        }
+    }
+
+    // Button Group in Table
+    .btn-group {
+        background-color: #f8f9fe;
+        padding: 2px;
+        border-radius: 30px;
+        
+        .btn {
+            padding: 0.4rem 0.8rem;
+            border: none;
+            border-radius: 30px !important;
+            font-size: 0.75rem;
+            font-weight: 600;
+
+            &:hover {
+                background-color: #fff;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            }
+        }
+    }
+}
+
+// DataTables Wrapper & Tools
+.dataTables_wrapper {
+    .dataTables_length,
+    .dataTables_filter {
+        padding: 1.5rem;
+        display: flex;
+        align-items: center;
+
+        @media (max-width: $tablet-bkp) {
+            flex-direction: column;
+            gap: 15px;
+            text-align: center;
+        }
+
+        label {
+            margin-bottom: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #6c757d;
+            font-size: 0.875rem;
+        }
+
+        select, input {
+            border: 1.5px solid #e9ecef;
+            border-radius: 10px;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+            outline: none;
+
+            &:focus {
+                border-color: #4a90e2;
+                box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+            }
+        }
+    }
+
+    .dataTables_filter {
+        justify-content: flex-end;
+        
+        input {
+            width: 250px;
+            margin-left: 0;
+
+            @media (max-width: $tablet-bkp) {
+                width: 100%;
+            }
+        }
+    }
+
+    .dataTables_info,
+    .dataTables_paginate {
+        padding: 1.5rem;
+        border-top: 1px solid #f1f3f9;
+    }
+
+    .dataTables_info {
+        font-size: 0.875rem;
+        color: #6c757d;
+    }
+
+    .dataTables_paginate {
+        display: flex;
+        justify-content: flex-end;
+
+        .pagination {
+            margin-bottom: 0;
+            gap: 5px;
+        }
+
+        .page-item {
+            .page-link {
+                border: none;
+                border-radius: 8px !important;
+                padding: 0.5rem 0.8rem;
+                color: #6c757d;
+                font-weight: 500;
+                font-size: 0.875rem;
+                min-width: 38px;
+                text-align: center;
+                transition: all 0.2s;
+
+                &:hover {
+                    background-color: #f3f4f6;
+                    color: #4a90e2;
+                }
+
+                &:focus {
+                    box-shadow: none;
+                }
+
+                .lucide {
+                    width: 14px;
+                    height: 14px;
+                    stroke-width: 3;
+                }
+            }
+
+            &.active .page-link {
+                background-color: #4a90e2;
+                color: #fff;
+                box-shadow: 0 4px 10px rgba(74, 144, 226, 0.25);
+            }
+
+            &.disabled .page-link {
+                background-color: transparent;
+                opacity: 0.5;
+            }
+        }
+    }
+}
+
+// Utility Table Classes
+.bg-primary-light { background-color: rgba(74, 144, 226, 0.08); }
+.uppercase { text-transform: uppercase; }
+.tracking-wider { letter-spacing: 0.05em; }
+
+// Alignment Helpers
+.align-middle { vertical-align: middle !important; }
+
+// Image Wrapper in Table
+.table-img-wrapper {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: #f3f4f6;
+    border: 1px solid #eef0f3;
+    
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+}
+
+// Avatar Circle
+.avatar-circle {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.8rem;
+}

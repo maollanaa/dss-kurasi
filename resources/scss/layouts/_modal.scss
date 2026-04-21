@@ -7,14 +7,14 @@
     .modal-dialog {
         max-width: 480px;
         width: calc(100% - 2rem);
-    }
 
-    .modal-dialog.modal-sm {
-        max-width: 420px;
-    }
+        &.modal-sm {
+            max-width: 420px;
+        }
 
-    .modal-dialog.modal-lg {
-        max-width: 720px;
+        &.modal-lg {
+            max-width: 720px;
+        }
     }
 
     .modal-content {
@@ -23,7 +23,6 @@
         box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
         overflow: hidden;
     }
-
 
     .modal-header {
         padding: 20px 24px 12px;

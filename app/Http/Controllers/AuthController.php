@@ -21,10 +21,8 @@ class AuthController extends Controller
             
             if ($remember) {
                 \Illuminate\Support\Facades\Cookie::queue('remember_email', $request->email, 43200); // 30 days
-                \Illuminate\Support\Facades\Cookie::queue('remember_password', $request->password, 43200);
             } else {
                 \Illuminate\Support\Facades\Cookie::queue(\Illuminate\Support\Facades\Cookie::forget('remember_email'));
-                \Illuminate\Support\Facades\Cookie::queue(\Illuminate\Support\Facades\Cookie::forget('remember_password'));
             }
 
             return redirect()->intended('/dashboard');
