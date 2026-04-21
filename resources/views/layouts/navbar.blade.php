@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand navbar-light sticky-top py-3 px-0 mt-3">
-    <button class="btn border-0 ml-3 d-md-none" type="button" data-toggle="collapse" data-target="#sidebarMenu"
+    <button class="btn border-0 ml-3 d-md-none" type="button" data-sidebar-open
         aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>

@@ -13,7 +13,7 @@
         overflow-y: auto;
     }
 
-    // Mobile: fix sidebar so it doesn't scroll with the page
+    // Mobile: slide in/out via translateX — no Bootstrap collapse
     @media (max-width: ($tablet-bkp)) {
         position: fixed !important;
         top: 0;
@@ -21,11 +21,20 @@
         height: 100vh !important;
         z-index: 1050;
         overflow-y: auto;
+        // Hidden by default — slid fully off-screen to the left
+        transform: translateX(-100%);
+        // Same easing as the general sidebar transition
+        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
+        // Visible state toggled by JS
+        &.sidebar-open {
+            transform: translateX(0);
+        }
 
         .sidebar-sticky {
             position: relative;
             height: 100%;
-            overflow: hidden; // no inner scroll on mobile
+            overflow: hidden;
         }
     }
 
@@ -146,6 +155,22 @@
             transform: scale(1.1);
             background-color: rgba(13, 110, 253, 0.15);
         }
+    }
+}
+
+// ── Mobile backdrop overlay ──────────────────────────────────────────────────
+.sidebar-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 1049; // just below sidebar z-index
+    opacity: 0;
+    transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
+    &.backdrop-visible {
+        display: block;
+        opacity: 1;
     }
 }
 

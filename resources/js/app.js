@@ -33,17 +33,51 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // Mobile: lock body scroll when sidebar is open
-    const sidebarMenu = document.getElementById('sidebarMenu');
-    if (sidebarMenu && window.jQuery) {
-        $(sidebarMenu).on('show.bs.collapse', function () {
-            if (window.innerWidth < 768) {
-                document.body.style.overflow = 'hidden';
-            }
-        });
-        $(sidebarMenu).on('hide.bs.collapse', function () {
-            document.body.style.overflow = '';
-        });
+    // Mobile: toggle sidebar via class (smooth CSS translateX, no Bootstrap collapse)
+    const sidebarMenu   = document.getElementById('sidebarMenu');
+    const sidebarClose  = document.getElementById('sidebarClose');
+    const sidebarBackdrop = document.getElementById('sidebarBackdrop');
+
+    function openMobileSidebar() {
+        if (!sidebarMenu) return;
+        sidebarMenu.classList.add('sidebar-open');
+        document.body.style.overflow = 'hidden';
+        // Show backdrop: set display first, then opacity on next frame
+        if (sidebarBackdrop) {
+            sidebarBackdrop.style.display = 'block';
+            requestAnimationFrame(() => sidebarBackdrop.classList.add('backdrop-visible'));
+        }
+    }
+
+    function closeMobileSidebar() {
+        if (!sidebarMenu) return;
+        sidebarMenu.classList.remove('sidebar-open');
+        document.body.style.overflow = '';
+        if (sidebarBackdrop) {
+            sidebarBackdrop.classList.remove('backdrop-visible');
+            // Hide after transition ends
+            sidebarBackdrop.addEventListener('transitionend', () => {
+                if (!sidebarBackdrop.classList.contains('backdrop-visible')) {
+                    sidebarBackdrop.style.display = 'none';
+                }
+            }, { once: true });
+        }
+    }
+
+    // The navbar hamburger button opens the sidebar on mobile
+    const navbarToggler = document.querySelector('.navbar-toggler[data-target="#sidebarMenu"], [data-sidebar-open]');
+    if (navbarToggler) {
+        navbarToggler.addEventListener('click', openMobileSidebar);
+    }
+
+    // Close button inside sidebar
+    if (sidebarClose) {
+        sidebarClose.addEventListener('click', closeMobileSidebar);
+    }
+
+    // Clicking the backdrop also closes
+    if (sidebarBackdrop) {
+        sidebarBackdrop.addEventListener('click', closeMobileSidebar);
     }
 
     if (typeof AOS !== 'undefined') {

@@ -1,4 +1,4 @@
-<nav class="sidebar col-md-3 col-lg-2 d-md-block border-right collapse min-vh-100" id="sidebarMenu">
+<nav class="sidebar col-md-3 col-lg-2 d-md-block border-right min-vh-100" id="sidebarMenu">
     <div class="sidebar-sticky d-flex flex-column">
         <div class="text-center py-4 mt-3 sidebar-brand">
             <h5 class="font-weight-bold mb-0 text-primary">
@@ -102,11 +102,11 @@
             </button>
         </div>
 
-        {{-- Close Button (mobile only, dismisses sidebar) --}}
+        {{-- Close Button (mobile only) --}}
         <div class="sidebar-close-wrapper mt-auto mb-4 py-3 d-flex d-md-none justify-content-center">
             <button
                 class="btn sidebar-close-btn rounded-circle bg-primary-light d-flex align-items-center justify-content-center shadow-none"
-                data-toggle="collapse" data-target="#sidebarMenu" aria-controls="sidebarMenu">
+                id="sidebarClose">
                 <span class="btn-icon">
                     <i data-lucide="x"></i>
                 </span>
@@ -114,3 +114,6 @@
         </div>
     </div>
 </nav>
+
+{{-- Mobile overlay backdrop --}}
+<div class="sidebar-backdrop d-md-none" id="sidebarBackdrop"></div>
