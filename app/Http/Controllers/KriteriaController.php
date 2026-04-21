@@ -47,4 +47,23 @@ class KriteriaController extends Controller
             'message' => 'Status skala berhasil diubah.'
         ]);
     }
+
+    public function updateSkala(Request $request)
+    {
+        $request->validate([
+            'id_kriteria'     => 'required|integer',
+            'nilai_skala'     => 'required|integer',
+            'deskripsi_skala' => 'required|string|max:255',
+            'is_aktif'        => 'required|in:0,1',
+        ]);
+
+        KriteriaSkala::where('id_kriteria', $request->id_kriteria)
+            ->where('nilai_skala', $request->nilai_skala)
+            ->update([
+                'deskripsi_skala' => $request->deskripsi_skala,
+                'is_aktif'        => (bool) $request->is_aktif,
+            ]);
+
+        return redirect()->back()->with('success', 'Skala berhasil diperbarui.');
+    }
 }

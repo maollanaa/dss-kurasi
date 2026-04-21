@@ -12,7 +12,7 @@
             <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-0 dashboard-main">
                 @include('layouts.navbar')
 
-                <div class="px-4 py-3 mt-3 dashboard-content">
+                <div class="px-4 py-3 dashboard-content">
 
 
                     <div class="card card-welcome">

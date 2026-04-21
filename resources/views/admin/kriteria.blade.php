@@ -12,7 +12,7 @@
             <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-0 dashboard-main">
                 @include('layouts.navbar')
 
-                <div class="px-4 py-3 mt-3 dashboard-content" data-aos="fade-up">
+                <div class="px-4 py-3 dashboard-content" data-aos="fade-up">
                     <div class="d-flex justify-content-between align-items-center mb-4">
                         <div>
                             <h4 class="font-weight-bold text-primary mb-1">Manajemen Kriteria & Parameter</h4>
@@ -64,7 +64,8 @@
                                                         <tr>
                                                             <th style="width: 150px;">Nilai Skala</th>
                                                             <th>Deskripsi Parameter / Skala</th>
-                                                            <th style="width: 120px;" class="text-center">Status</th>
+                                                            <th style="width: 100px;" class="text-center">Status</th>
+                                                            <th style="width: 100px;" class="text-center">Aksi</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -79,14 +80,21 @@
                                                                     <span class="text-sm {{ !$scale->is_aktif ? 'text-muted text-strikethrough' : '' }}">{{ $scale->deskripsi_skala }}</span>
                                                                 </td>
                                                                 <td class="text-center">
-                                                                    <div class="custom-control custom-switch">
-                                                                        <input type="checkbox" class="custom-control-input toggle-skala" 
-                                                                               id="switch-{{ $item->id_kriteria }}-{{ $scale->nilai_skala }}"
-                                                                               data-id-kriteria="{{ $item->id_kriteria }}"
-                                                                               data-nilai-skala="{{ $scale->nilai_skala }}"
-                                                                               {{ $scale->is_aktif ? 'checked' : '' }}>
-                                                                        <label class="custom-control-label cursor-pointer" for="switch-{{ $item->id_kriteria }}-{{ $scale->nilai_skala }}"></label>
-                                                                    </div>
+                                                                    @if($scale->is_aktif)
+                                                                        <span class="badge badge-pill badge-success px-2 py-1">Aktif</span>
+                                                                    @else
+                                                                        <span class="badge badge-pill badge-secondary px-2 py-1">Non-aktif</span>
+                                                                    @endif
+                                                                </td>
+                                                                <td class="text-center">
+                                                                    <button type="button"
+                                                                            class="btn btn-sm btn-outline-secondary rounded-pill px-2"
+                                                                            data-toggle="modal"
+                                                                            data-target="#modalEditSkala-{{ $item->id_kriteria }}-{{ $scale->nilai_skala }}"
+                                                                            title="Edit Skala">
+                                                                        <i data-lucide="pencil" style="width: 13px; height: 13px;"></i>
+                                                                        <span class="d-none d-md-inline ml-1" style="font-size: 0.78rem;">Edit</span>
+                                                                    </button>
                                                                 </td>
                                                             </tr>
                                                         @endforeach
@@ -104,6 +112,9 @@
 
                 @foreach ($kriteria as $item)
                     @include('modal.edit_kriteria', ['item' => $item])
+                    @foreach ($item->scales as $scale)
+                        @include('modal.edit_skala', ['item' => $item, 'scale' => $scale])
+                    @endforeach
                 @endforeach
             </main>
         </div>
@@ -155,35 +166,9 @@
             once: true
         });
 
-        $('.toggle-skala').on('change', function() {
-            let checkbox = $(this);
-            let idKriteria = checkbox.data('id-kriteria');
-            let nilaiSkala = checkbox.data('nilai-skala');
-            let row = checkbox.closest('tr');
-            let label = row.find('span.text-sm');
-
-            $.ajax({
-                url: "{{ route('admin.kriteria.toggle-skala') }}",
-                method: "POST",
-                data: {
-                    _token: "{{ csrf_token() }}",
-                    id_kriteria: idKriteria,
-                    nilai_skala: nilaiSkala
-                },
-                success: function(response) {
-                    if (response.success) {
-                        if (response.is_aktif) {
-                            label.removeClass('text-muted text-strikethrough');
-                        } else {
-                            label.addClass('text-muted text-strikethrough');
-                        }
-                    }
-                },
-                error: function() {
-                    alert('Gagal mengubah status skala.');
-                    checkbox.prop('checked', !checkbox.prop('checked'));
-                }
-            });
+        // Re-initialize Lucide icons after modals are shown
+        $(document).on('shown.bs.modal', function() {
+            lucide.createIcons();
         });
     });
 </script>

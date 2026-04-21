@@ -12,7 +12,7 @@
             <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-0 dashboard-main">
                 @include('layouts.navbar')
 
-                <div class="px-4 py-3 mt-3 dashboard-content">
+                <div class="px-4 py-3 dashboard-content">
 
                     <div class="card card-welcome">
                         <div class="card-body">
@@ -100,12 +100,14 @@
                             <div class="card h-100 shadow-sm border-0">
                                 <div
                                     class="card-header bg-white font-weight-bold d-flex justify-content-between align-items-center">
-                                    <span><i data-lucide="trophy" class="text-warning mr-2"></i> Top 5 Produk Kurasi Terakhir</span>
+                                    <span><i data-lucide="trophy" class="text-warning mr-2"></i> Top 5 Produk Kurasi
+                                        Terakhir</span>
                                     <span class="badge badge-secondary">Periode: -</span>
                                 </div>
                                 <div class="card-body d-flex align-items-center justify-content-center">
                                     <div class="text-muted text-center py-5">
-                                        <i data-lucide="inbox" class="d-block mb-3 text-secondary" style="width: 48px; height: 48px; margin: 0 auto;"></i>
+                                        <i data-lucide="inbox" class="d-block mb-3 text-secondary"
+                                            style="width: 48px; height: 48px; margin: 0 auto;"></i>
                                         Belum ada kurasi yang berjalan sebelumnya.
                                     </div>
                                 </div>
@@ -116,12 +118,14 @@
                         <div class="col-md-6 mb-4">
                             <div class="card h-100 shadow-sm border-0">
                                 <div class="card-header bg-white font-weight-bold">
-                                    <i data-lucide="bar-chart-3" class="text-primary mr-2"></i> Tren 5 Periode Terakhir Lolos
+                                    <i data-lucide="bar-chart-3" class="text-primary mr-2"></i> Tren 5 Periode Terakhir
+                                    Lolos
                                     Kurasi
                                 </div>
                                 <div class="card-body d-flex align-items-center justify-content-center">
                                     <div class="text-muted text-center py-5">
-                                        <i data-lucide="trending-down" class="text-secondary d-block mb-3" style="width: 48px; height: 48px; margin: 0 auto;"></i>
+                                        <i data-lucide="trending-down" class="text-secondary d-block mb-3"
+                                            style="width: 48px; height: 48px; margin: 0 auto;"></i>
                                         Belum ada kurasi yang berjalan sebelumnya.
                                     </div>
                                 </div>

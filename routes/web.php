@@ -20,4 +20,5 @@ Route::middleware('auth')->group(function () {
     Route::get('/admin/kriteria', [\App\Http\Controllers\KriteriaController::class, 'index'])->name('admin.kriteria');
     Route::post('/admin/kriteria/{id}', [\App\Http\Controllers\KriteriaController::class, 'update'])->name('admin.kriteria.update');
     Route::post('/admin/kriteria/skala/toggle', [\App\Http\Controllers\KriteriaController::class, 'toggleSkala'])->name('admin.kriteria.toggle-skala');
+    Route::post('/admin/kriteria/skala/update', [\App\Http\Controllers\KriteriaController::class, 'updateSkala'])->name('admin.kriteria.update-skala');
 });
