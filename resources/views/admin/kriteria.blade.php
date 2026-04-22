@@ -111,9 +111,9 @@
                 </div>
 
                 @foreach ($kriteria as $item)
-                    @include('modal.edit_kriteria', ['item' => $item])
+                    @include('modal.kriteria.edit', ['item' => $item])
                     @foreach ($item->scales as $scale)
-                        @include('modal.edit_skala', ['item' => $item, 'scale' => $scale])
+                        @include('modal.kriteria.skala', ['item' => $item, 'scale' => $scale])
                     @endforeach
                 @endforeach
             </main>

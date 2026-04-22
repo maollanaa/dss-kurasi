@@ -49,5 +49,5 @@
 </nav>
 
 @push('modal')
-    @include('modal.logout')
+    @include('modal.auth.logout')
 @endpush
