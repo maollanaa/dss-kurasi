@@ -1,6 +1,6 @@
 @extends('base.app')
 
-@section('title', 'Login')
+@section('title', 'Reset Password')
 @section('class-body', 'bg-light')
 
 @section('content')
@@ -13,35 +13,24 @@
                     <div class="login-left">
                         <div data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000">
                             <img src="{{ asset('assets/images/logo.png') }}" alt="Logo" class="brand-logo">
-                            <h2>Sistem Pendukung Keputusan Kurasi Produk UMKM</h2>
+                            <h2>Atur Ulang Password</h2>
                             <p>
-                                Selamat datang kembali di portal manajemen data kurasi UMKM. Akses dashboard untuk mengelola penilaian produk.
+                                Masukkan password baru Anda untuk memulihkan akses ke akun dashboard Kurasi UMKM.
                             </p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Sisi Kanan: Form Login -->
+                <!-- Sisi Kanan: Form Reset Password -->
                 <div class="col-md-7">
                     <div class="login-right">
                         <div class="login-form-wrap" data-aos="fade-left" data-aos-delay="400" data-aos-duration="1000">
-                            <h3>Login</h3>
-                            <p class="subtitle">Masuk ke akun Anda untuk melanjutkan</p>
+                            <h3>Password Baru</h3>
+                            <p class="subtitle">Buat password yang kuat dan mudah diingat</p>
 
-                            <form action="{{ route('login') }}" method="POST">
+                            <form action="{{ route('password.update') }}" method="POST">
                                 @csrf
-
-                                @if (session('status'))
-                                    <div class="alert alert-success alert-dismissible fade show mb-4 border-0 shadow-sm" role="alert" style="border-radius: 12px;">
-                                        <div class="d-flex align-items-center">
-                                            <i data-lucide="check-circle" class="mr-2 lucide-sm"></i>
-                                            <span>{{ session('status') }}</span>
-                                        </div>
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                @endif
+                                <input type="hidden" name="token" value="{{ $token }}">
 
                                 <div class="form-group">
                                     <label for="email">Email</label>
@@ -56,10 +45,10 @@
                                             name="email"
                                             id="email"
                                             class="form-control @error('email') is-invalid @enderror"
-                                            value="{{ old('email', request()->cookie('remember_email')) }}"
+                                            value="{{ old('email', $email) }}"
                                             placeholder="Masukkan email"
                                             required
-                                            autofocus
+                                            readonly
                                         >
                                     </div>
                                     @error('email')
@@ -70,7 +59,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="password">Password</label>
+                                    <label for="password">Password Baru</label>
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">
@@ -82,8 +71,9 @@
                                             name="password"
                                             id="password"
                                             class="form-control @error('password') is-invalid @enderror"
-                                            placeholder="Masukkan password"
+                                            placeholder="Masukkan password baru"
                                             required
+                                            autofocus
                                         >
                                         <div class="input-group-append">
                                             <button class="btn btn-outline-light border-left-0 btn-toggle-password" type="button" style="border: 1px solid #ced4da; border-left: none; background: white;">
@@ -98,26 +88,33 @@
                                     @enderror
                                 </div>
 
-                                <div class="form-group d-flex justify-content-between align-items-center mt-4">
-                                    <div class="custom-control custom-checkbox">
+                                <div class="form-group">
+                                    <label for="password_confirmation">Konfirmasi Password Baru</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i data-lucide="check-square"></i>
+                                            </span>
+                                        </div>
                                         <input
-                                            type="checkbox"
-                                            class="custom-control-input"
-                                            id="remember"
-                                            name="remember"
-                                            {{ request()->cookie('remember_email') ? 'checked' : '' }}
+                                            type="password"
+                                            name="password_confirmation"
+                                            id="password_confirmation"
+                                            class="form-control"
+                                            placeholder="Ulangi password baru"
+                                            required
                                         >
-                                        <label class="custom-control-label" for="remember">
-                                            Ingat Saya
-                                        </label>
+                                        <div class="input-group-append">
+                                            <button class="btn btn-outline-light border-left-0 btn-toggle-password" type="button" style="border: 1px solid #ced4da; border-left: none; background: white;">
+                                                <i data-lucide="eye" class="text-muted"></i>
+                                            </button>
+                                        </div>
                                     </div>
-
-                                    <a href="{{ route('password.request') }}" class="forgot-link">Lupa Password?</a>
                                 </div>
 
                                 <button type="submit" class="btn btn-dark btn-block btn-login mt-4">
-                                    <span>Masuk ke Dashboard</span>
-                                    <i data-lucide="log-in" class="ml-2"></i>
+                                    <span>Simpan Perubahan Password</span>
+                                    <i data-lucide="save" class="ml-2"></i>
                                 </button>
                             </form>
 
@@ -136,7 +133,6 @@
 @push('scripts')
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Trigger AOS again to be sure
         if (typeof AOS !== 'undefined') {
             AOS.refresh();
         }

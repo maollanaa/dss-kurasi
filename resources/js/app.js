@@ -109,4 +109,26 @@ document.addEventListener('DOMContentLoaded', function () {
             spaceBetween: 16,
         });
     }
+
+    // Password Toggle Logic
+    document.addEventListener('click', function (e) {
+        if (e.target.closest('.btn-toggle-password')) {
+            const button = e.target.closest('.btn-toggle-password');
+            const inputGroup = button.closest('.input-group');
+            const input = inputGroup.querySelector('input');
+            const icon = button.querySelector('i');
+
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.setAttribute('data-lucide', 'eye-off');
+            } else {
+                input.type = 'password';
+                icon.setAttribute('data-lucide', 'eye');
+            }
+            
+            if (window.lucide) {
+                window.lucide.createIcons();
+            }
+        }
+    });
 });
