@@ -4,6 +4,7 @@ import { createIcons, icons } from 'lucide';
 document.addEventListener('DOMContentLoaded', function () {
     // Initialize Lucide Icons
     createIcons({ icons });
+    window.lucide = { createIcons, icons };
 
     // Sidebar Toggle Logic — Desktop only (lg: ≥992px)
     // Tablet (md: 768–991px) is auto-minimized via CSS, no JS needed

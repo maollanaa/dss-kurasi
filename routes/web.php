@@ -34,4 +34,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/admin/produk/{id}/update', [\App\Http\Controllers\ProdukController::class, 'update'])->name('admin.produk.update');
     Route::post('/admin/produk/{id}/delete', [\App\Http\Controllers\ProdukController::class, 'destroy'])->name('admin.produk.delete');
     Route::post('/admin/produk/{id}/legalitas', [\App\Http\Controllers\ProdukController::class, 'updateLegalitas'])->name('admin.produk.legalitas');
+    Route::get('/admin/produk/template', [\App\Http\Controllers\ProdukController::class, 'downloadTemplate'])->name('admin.produk.template');
+    Route::post('/admin/produk/import', [\App\Http\Controllers\ProdukController::class, 'import'])->name('admin.produk.import');
 });

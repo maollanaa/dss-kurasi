@@ -33,6 +33,7 @@
 
             &:hover {
                 background-color: #f8faff;
+                transform: scale(0.998);
                 td {
                     background-color: transparent;
                 }
@@ -65,14 +66,16 @@
 .dataTables_wrapper {
     .dataTables_length,
     .dataTables_filter {
-        padding: 1.5rem;
+        padding: 1.25rem 1.5rem;
         display: flex;
         align-items: center;
 
         @media (max-width: $tablet-bkp) {
+            padding: 0.85rem 1.25rem;
             flex-direction: column;
-            gap: 15px;
-            text-align: center;
+            align-items: flex-start;
+            gap: 12px;
+            text-align: left;
         }
 
         label {
@@ -97,17 +100,46 @@
                 box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
             }
         }
+
+        select {
+            cursor: pointer;
+            display: inline-block !important;
+            width: auto !important;
+            min-width: 65px !important;
+            padding: 0.375rem 1.75rem 0.375rem 0.75rem !important;
+            font-size: 0.875rem !important;
+            line-height: 1.5 !important;
+            color: #495057 !important;
+            vertical-align: middle !important;
+            background: #fff url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='4' height='5' viewBox='0 0 4 5'%3e%3cpath fill='%23343a40' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e") no-repeat right 0.75rem center/8px 10px !important;
+            border: 1.5px solid #e9ecef !important;
+            border-radius: 10px !important;
+            appearance: none !important;
+            -webkit-appearance: none !important;
+            -moz-appearance: none !important;
+
+            &:focus {
+                border-color: #4a90e2 !important;
+                outline: 0 !important;
+                box-shadow: 0 0 0 0.2rem rgba(74, 144, 226, 0.25) !important;
+            }
+        }
     }
 
     .dataTables_filter {
         justify-content: flex-end;
+
+        @media (max-width: $tablet-bkp) {
+            justify-content: flex-start;
+        }
         
         input {
             width: 250px;
             margin-left: 0;
 
-            @media (max-width: $tablet-bkp) {
+            @media (max-width: $mobile-bkp) {
                 width: 100%;
+                margin-top: 10px;
             }
         }
     }
@@ -127,9 +159,21 @@
         display: flex;
         justify-content: flex-end;
 
+        @media (max-width: $tablet-bkp) {
+            justify-content: flex-start;
+        }
+
         .pagination {
             margin-bottom: 0;
             gap: 5px;
+            
+            // Ensure icons are centered
+            .page-link {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border: 1px solid #edf2f7; // Added subtle border for visibility
+            }
         }
 
         .page-item {
