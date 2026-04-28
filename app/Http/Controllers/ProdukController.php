@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\DB;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Worksheet\Table;
+use PhpOffice\PhpSpreadsheet\Worksheet\Table\TableStyle;
 
 
 class ProdukController extends Controller
@@ -100,7 +102,7 @@ class ProdukController extends Controller
 
         $produk->delete();
 
-        return redirect()->back()->with('success', 'Produk berhasil dihapus.');
+        return redirect()->route('admin.produk')->with('success', 'Produk berhasil dihapus.');
     }
 
     public function updateLegalitas(Request $request, $id)
@@ -172,12 +174,22 @@ class ProdukController extends Controller
         $sheet1->setCellValue('B1', 'Nama Brand UMKM');
         $sheet1->setCellValue('C1', 'Nama Pemilik');
         $sheet1->setCellValue('D1', 'Deskripsi Produk');
+        $sheet1->setCellValue('E1', 'Foto Produk');
         
         // Style Header Sheet 1
-        $sheet1->getStyle('A1:D1')->getFont()->setBold(true);
+        $sheet1->getStyle('A1:E1')->getFont()->setBold(true);
         foreach(range('A','D') as $columnID) {
             $sheet1->getColumnDimension($columnID)->setAutoSize(true);
         }
+        $sheet1->getColumnDimension('E')->setWidth(20); // Width for photo column
+
+        // Format as Table
+        $table1 = new Table('A1:E101', 'TableDetailProduk');
+        $tableStyle1 = new TableStyle();
+        $tableStyle1->setTheme(TableStyle::TABLE_STYLE_MEDIUM9);
+        $tableStyle1->setShowRowStripes(true);
+        $table1->setStyle($tableStyle1);
+        $sheet1->addTable($table1);
 
         // Sheet 2: Legalitas
         $sheet2 = $spreadsheet->createSheet();
@@ -206,6 +218,14 @@ class ProdukController extends Controller
         foreach(range('A','L') as $columnID) {
             $sheet2->getColumnDimension($columnID)->setAutoSize(true);
         }
+
+        // Format as Table
+        $table2 = new Table('A1:L101', 'TableLegalitas');
+        $tableStyle2 = new TableStyle();
+        $tableStyle2->setTheme(TableStyle::TABLE_STYLE_MEDIUM9);
+        $tableStyle2->setShowRowStripes(true);
+        $table2->setStyle($tableStyle2);
+        $sheet2->addTable($table2);
 
         $writer = new Xlsx($spreadsheet);
         $filename = 'template_import_produk.xlsx';
@@ -238,11 +258,26 @@ class ProdukController extends Controller
                 throw new \Exception('Sheet "Detail Produk" tidak ditemukan.');
             }
 
+            // Collect drawings (images) from Sheet 1
+            $drawings = $sheet1->getDrawingCollection();
+            $rowImages = [];
+            foreach ($drawings as $drawing) {
+                $coordinate = $drawing->getCoordinates();
+                // Map images in Column E (Foto Produk) to their row number
+                if (preg_match('/^E(\d+)$/', $coordinate, $matches)) {
+                    $rowImages[$matches[1]] = $drawing;
+                }
+            }
+
             $rows1 = $sheet1->toArray();
             $header1 = array_shift($rows1); // Remove header
 
+            $excelRowIndex = 2; // Data starts at row 2 in Excel
             foreach ($rows1 as $row) {
-                if (empty($row[0]) || empty($row[1])) continue; // Skip empty nama_produk or brand
+                if (empty($row[0]) || empty($row[1])) {
+                    $excelRowIndex++;
+                    continue;
+                }
 
                 $nama_produk = trim($row[0]);
                 $brand = trim($row[1]);
@@ -253,19 +288,53 @@ class ProdukController extends Controller
                     ->where('nama_brand_umkm', $brand)
                     ->first();
 
+                $updateData = [
+                    'nama_pemilik' => $pemilik,
+                    'deskripsi_produk' => $deskripsi,
+                ];
+
+                // Handle Image from Excel
+                if (isset($rowImages[$excelRowIndex])) {
+                    $drawing = $rowImages[$excelRowIndex];
+                    $imageContents = '';
+                    $extension = '';
+
+                    if ($drawing instanceof \PhpOffice\PhpSpreadsheet\Worksheet\MemoryDrawing) {
+                        ob_start();
+                        call_user_func($drawing->getRenderingFunction(), $drawing->getImageResource());
+                        $imageContents = ob_get_contents();
+                        ob_end_clean();
+                        $extension = 'png';
+                    } else {
+                        $zipReader = fopen($drawing->getPath(), 'r');
+                        while (!feof($zipReader)) {
+                            $imageContents .= fread($zipReader, 1024);
+                        }
+                        fclose($zipReader);
+                        $extension = $drawing->getExtension();
+                    }
+
+                    if ($imageContents) {
+                        $filename = 'import_' . time() . '_' . uniqid() . '.' . $extension;
+                        $path = 'produk/' . $filename;
+                        
+                        // Delete old photo if exists
+                        if ($produk && $produk->foto_produk) {
+                            Storage::disk('public')->delete($produk->foto_produk);
+                        }
+                        
+                        Storage::disk('public')->put($path, $imageContents);
+                        $updateData['foto_produk'] = $path;
+                    }
+                }
+
                 if (!$produk) {
-                    $produk = Alternatif::create([
-                        'nama_produk' => $nama_produk,
-                        'nama_brand_umkm' => $brand,
-                        'nama_pemilik' => $pemilik,
-                        'deskripsi_produk' => $deskripsi,
-                        'is_aktif' => false // Default: Belum diisi legalitas
-                    ]);
+                    $updateData['nama_produk'] = $nama_produk;
+                    $updateData['nama_brand_umkm'] = $brand;
+                    $updateData['is_aktif'] = false;
+                    $produk = Alternatif::create($updateData);
                 } else {
-                    $produk->update([
-                        'nama_pemilik' => $pemilik,
-                        'deskripsi_produk' => $deskripsi
-                    ]);
+                    $produk->update($updateData);
                 }
 
                 // Ensure legalitas record exists
@@ -274,6 +343,8 @@ class ProdukController extends Controller
                         'id_alternatif' => $produk->id_alternatif,
                     ]);
                 }
+                
+                $excelRowIndex++;
             }
 
             // 2. Process Sheet 2: Legalitas
@@ -285,6 +356,18 @@ class ProdukController extends Controller
 
                     foreach ($rows2 as $row) {
                         if (empty($row[0]) || empty($row[1])) continue;
+
+                        // Pastikan ada data legalitas yang diisi (kolom C sampai L)
+                        $hasLegalitasData = false;
+                        for ($i = 2; $i <= 11; $i++) {
+                            if (isset($row[$i]) && trim($row[$i]) !== '') {
+                                $hasLegalitasData = true;
+                                break;
+                            }
+                        }
+
+                        // Jika kolom legalitas kosong semua (hanya ada nama produk karena formula), lewati
+                        if (!$hasLegalitasData) continue;
 
                         $nama_produk = trim($row[0]);
                         $brand = trim($row[1]);
