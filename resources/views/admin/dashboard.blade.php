@@ -41,7 +41,7 @@
                                 <a href="#" class="text-decoration-none">
                                     <div class="card card-stat h-100 shadow-sm border-0">
                                         <div class="card-body d-flex flex-column justify-content-center">
-                                            <div class="stat-value">0</div>
+                                            <div class="stat-value">{{ $totalPeriodeKurasi }}</div>
                                             <div class="stat-label">Periode Kurasi</div>
                                         </div>
                                     </div>
@@ -51,7 +51,7 @@
                                 <a href="#" class="text-decoration-none">
                                     <div class="card card-stat h-100 shadow-sm border-0">
                                         <div class="card-body d-flex flex-column justify-content-center">
-                                            <div class="stat-value">0</div>
+                                            <div class="stat-value">{{ $totalProduk }}</div>
                                             <div class="stat-label">Total Produk</div>
                                         </div>
                                     </div>
