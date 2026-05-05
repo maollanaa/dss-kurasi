@@ -4,7 +4,18 @@ Dokumen ini merangkum kebutuhan fungsional dan non-fungsional sistem berdasarkan
 
 ---
 
-## 1. Kebutuhan Fungsional (Functional Requirements)
+## 1. Peran Pengguna (User Roles)
+
+Sistem ini dirancang untuk diakses oleh dua jenis pengguna utama dengan tanggung jawab yang berbeda:
+
+| Peran | Deskripsi Singkat & Tanggung Jawab Utama |
+| :--- | :--- |
+| **Admin** | Bertanggung jawab penuh atas manajemen data master (Kriteria, Produk UMKM), pengaturan bobot AHP, serta mengelola dan memantau seluruh periode kurasi. |
+| **Kurator** | Bertugas melakukan penilaian faktual di lapangan terhadap produk-produk UMKM yang masuk dalam periode kurasi yang sedang berjalan. |
+
+---
+
+## 2. Kebutuhan Fungsional (Functional Requirements)
 
 ### 🛠️ Modul 1: Fondasi & Autentikasi (Sudah Selesai)
 - **Sistem dapat** mengelola autentikasi pengguna (login, reset password, sesi) secara aman bagi Admin dan Kurator.
@@ -32,7 +43,7 @@ Dokumen ini merangkum kebutuhan fungsional dan non-fungsional sistem berdasarkan
 
 ---
 
-## 2. Kebutuhan Non-Fungsional (Non-Functional Requirements)
+## 3. Kebutuhan Non-Fungsional (Non-Functional Requirements)
 
 | Aspek | Status Saat Ini | Rencana Pengembangan |
 | :--- | :--- | :--- |
@@ -44,7 +55,7 @@ Dokumen ini merangkum kebutuhan fungsional dan non-fungsional sistem berdasarkan
 
 ---
 
-## 3. Library JS yang Digunakan
+## 4. Library JS yang Digunakan
 
 Proyek ini menggunakan beberapa library JavaScript untuk mendukung fungsionalitas dan tampilan:
 

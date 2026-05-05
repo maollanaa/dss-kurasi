@@ -16,17 +16,6 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
 
     {{-- Lucide Icons Config --}}
-    <style>
-        .lucide {
-            width: 18px;
-            height: 18px;
-            stroke-width: 2;
-            vertical-align: middle;
-        }
-        .sidebar .lucide {
-            margin-right: 10px;
-        }
-    </style>
 
     {{-- DataTables Bootstrap 4 --}}
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap4.min.css">

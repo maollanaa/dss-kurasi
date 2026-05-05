@@ -264,3 +264,33 @@
         }
     }
 }
+
+.card-kriteria { transition: all 0.3s ease; border-radius: 12px; }
+.card-kriteria:hover { transform: translateY(-3px); }
+.text-strikethrough { text-decoration: line-through; opacity: 0.6; }
+.font-weight-600 { font-weight: 600; color: #444; }
+.cursor-pointer { cursor: pointer; }
+
+/* Text truncation for nama kriteria & aspek */
+.kriteria-info { min-width: 0; flex: 1 1 0; overflow: hidden; }
+.kriteria-text { min-width: 0; overflow: hidden; }
+.text-truncate-custom {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+}
+
+.custom-switch .custom-control-input:checked ~ .custom-control-label::before {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+}
+
+/* Chevron toggle visibility */
+.btn[data-toggle="collapse"].collapsed .icon-up { display: none; }
+.btn[data-toggle="collapse"]:not(.collapsed) .icon-down { display: none; }
+
+.btn[data-toggle="collapse"] i {
+    transition: all 0.2s ease;
+}

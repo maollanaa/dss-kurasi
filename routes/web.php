@@ -28,6 +28,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/admin/kriteria/skala/toggle', [\App\Http\Controllers\KriteriaController::class, 'toggleSkala'])->name('admin.kriteria.toggle-skala');
     Route::post('/admin/kriteria/skala/update', [\App\Http\Controllers\KriteriaController::class, 'updateSkala'])->name('admin.kriteria.update-skala');
     
+    // Bobot Kriteria Management
+    Route::get('/admin/bobot', [\App\Http\Controllers\Admin\BobotKriteriaController::class, 'index'])->name('admin.bobot.index');
+    Route::post('/admin/bobot/calculate', [\App\Http\Controllers\Admin\BobotKriteriaController::class, 'calculate'])->name('admin.bobot.calculate');
+    
     // User Management
     Route::get('/admin/user', [\App\Http\Controllers\UserController::class, 'index'])->name('admin.user');
     Route::post('/admin/user', [\App\Http\Controllers\UserController::class, 'store'])->name('admin.user.store');

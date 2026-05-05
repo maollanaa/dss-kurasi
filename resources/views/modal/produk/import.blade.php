@@ -56,6 +56,7 @@
     </div>
 </div>
 
+@push('scripts')
 <script>
     $(document).ready(function () {
         $('#formImportProduk').on('submit', function (e) {
@@ -115,3 +116,4 @@
         });
     });
 </script>
+@endpush

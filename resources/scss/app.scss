@@ -12,3 +12,16 @@ body {
 @import 'pages/login';
 @import 'pages/dashboard';
 @import 'pages/kriteria';
+@import 'pages/bobot';
+@import 'pages/produk';
+
+.lucide {
+    width: 18px;
+    height: 18px;
+    stroke-width: 2;
+    vertical-align: middle;
+}
+
+.sidebar .lucide {
+    margin-right: 10px;
+}

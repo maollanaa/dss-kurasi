@@ -1,0 +1,39 @@
+.ahp-radio-btn {
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    color: #6c757d;
+    background: #fff;
+    border: 1px solid #ced4da;
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.ahp-radio-btn:hover {
+    background: #e9ecef;
+}
+input[type="radio"]:checked + .ahp-btn-left {
+    background: #0d6efd;
+    color: white;
+    border-color: #0d6efd;
+    transform: scale(1.15);
+    box-shadow: 0 4px 8px rgba(13, 110, 253, 0.3);
+}
+input[type="radio"]:checked + .ahp-btn-center {
+    background: #6c757d;
+    color: white;
+    border-color: #6c757d;
+    transform: scale(1.15);
+    box-shadow: 0 4px 8px rgba(108, 117, 125, 0.3);
+}
+input[type="radio"]:checked + .ahp-btn-right {
+    background: #198754;
+    color: white;
+    border-color: #198754;
+    transform: scale(1.15);
+    box-shadow: 0 4px 8px rgba(25, 135, 84, 0.3);
+}
