@@ -28,31 +28,40 @@
                         <div class="col-12 col-md-8 col-custom-5-8">
                             <div class="summary-grid">
                                 <!-- Card 1 -->
-                                <a href="#" class="text-decoration-none">
+                                <a href="{{ route('admin.kriteria') }}" class="text-decoration-none">
                                     <div class="card card-stat h-100 shadow-sm border-0">
-                                        <div class="card-body d-flex flex-column justify-content-center">
+                                        <div class="card-body d-flex flex-column justify-content-between">
+                                            <div class="d-flex justify-content-between align-items-start">
+                                                <div class="stat-label">Total Kriteria</div>
+                                                <div class="stat-icon text-muted"><i data-lucide="list"></i></div>
+                                            </div>
                                             <div class="stat-value">{{ $totalKriteria }}</div>
-                                            <div class="stat-label">Total Kriteria</div>
                                         </div>
                                     </div>
                                 </a>
 
                                 <!-- Card 2 -->
-                                <a href="#" class="text-decoration-none">
+                                <a href="{{ route('admin.kurasi.index') }}" class="text-decoration-none">
                                     <div class="card card-stat h-100 shadow-sm border-0">
-                                        <div class="card-body d-flex flex-column justify-content-center">
+                                        <div class="card-body d-flex flex-column justify-content-between">
+                                            <div class="d-flex justify-content-between align-items-start">
+                                                <div class="stat-label">Periode Kurasi</div>
+                                                <div class="stat-icon text-muted"><i data-lucide="calendar"></i></div>
+                                            </div>
                                             <div class="stat-value">{{ $totalPeriodeKurasi }}</div>
-                                            <div class="stat-label">Periode Kurasi</div>
                                         </div>
                                     </div>
                                 </a>
 
                                 <!-- Card 3 -->
-                                <a href="#" class="text-decoration-none">
+                                <a href="{{ route('admin.produk') }}" class="text-decoration-none">
                                     <div class="card card-stat h-100 shadow-sm border-0">
-                                        <div class="card-body d-flex flex-column justify-content-center">
+                                        <div class="card-body d-flex flex-column justify-content-between">
+                                            <div class="d-flex justify-content-between align-items-start">
+                                                <div class="stat-label">Total Produk</div>
+                                                <div class="stat-icon text-muted"><i data-lucide="box"></i></div>
+                                            </div>
                                             <div class="stat-value">{{ $totalProduk }}</div>
-                                            <div class="stat-label">Total Produk</div>
                                         </div>
                                     </div>
                                 </a>
@@ -60,9 +69,12 @@
                                 <!-- Card 4 -->
                                 <a href="#" class="text-decoration-none">
                                     <div class="card card-stat h-100 shadow-sm border-0">
-                                        <div class="card-body d-flex flex-column justify-content-center">
+                                        <div class="card-body d-flex flex-column justify-content-between">
+                                            <div class="d-flex justify-content-between align-items-start">
+                                                <div class="stat-label">Produk Lolos</div>
+                                                <div class="stat-icon text-muted"><i data-lucide="check-circle"></i></div>
+                                            </div>
                                             <div class="stat-value text-success">0</div>
-                                            <div class="stat-label">Produk Lolos</div>
                                         </div>
                                     </div>
                                 </a>

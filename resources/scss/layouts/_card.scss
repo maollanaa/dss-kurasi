@@ -36,20 +36,30 @@
 
     // SubClass: Stat Card (jenis kartu lain dengan style dasar sama)
     &.card-stat {
-        text-align: center;
+        text-align: left;
         background-color: #ffffff;
 
-        .stat-value {
-            font-size: 32px;
-            font-weight: 800;
+        .stat-label {
+            font-size: 18px;
             color: #212529;
+            font-weight: 500;
         }
 
-        .stat-label {
-            font-size: 14px;
-            color: #6c757d;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+        .stat-icon {
+            // color: #212529;
+
+            svg {
+                color: #212529;
+                width: 36px;
+                height: 36px;
+            }
+        }
+
+        .stat-value {
+            font-size: 50px;
+            font-weight: 800;
+            color: #212529;
+            // margin-top: 12px;
         }
     }
 }
