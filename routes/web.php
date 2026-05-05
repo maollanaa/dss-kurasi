@@ -46,4 +46,14 @@ Route::middleware('auth')->group(function () {
     Route::post('/admin/produk/{id}/legalitas', [\App\Http\Controllers\ProdukController::class, 'updateLegalitas'])->name('admin.produk.legalitas');
     Route::get('/admin/produk/template', [\App\Http\Controllers\ProdukController::class, 'downloadTemplate'])->name('admin.produk.template');
     Route::post('/admin/produk/import', [\App\Http\Controllers\ProdukController::class, 'import'])->name('admin.produk.import');
+
+    // Manajemen Kurasi (Periode)
+    Route::get('/admin/kurasi', [\App\Http\Controllers\PeriodeKurasiController::class, 'index'])->name('admin.kurasi.index');
+    Route::post('/admin/kurasi', [\App\Http\Controllers\PeriodeKurasiController::class, 'store'])->name('admin.kurasi.store');
+    Route::post('/admin/kurasi/{id}/update', [\App\Http\Controllers\PeriodeKurasiController::class, 'update'])->name('admin.kurasi.update');
+    Route::post('/admin/kurasi/{id}/delete', [\App\Http\Controllers\PeriodeKurasiController::class, 'destroy'])->name('admin.kurasi.delete');
+
+    // Manajemen Produk dalam Periode Kurasi
+    Route::get('/admin/kurasi/{id}/produk', [\App\Http\Controllers\PeriodeKurasiController::class, 'manageProduk'])->name('admin.kurasi.produk');
+    Route::post('/admin/kurasi/{id}/produk', [\App\Http\Controllers\PeriodeKurasiController::class, 'storeProduk'])->name('admin.kurasi.produk.store');
 });
