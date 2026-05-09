@@ -66,4 +66,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/kurator/penilaian/{id_periode}/workspace/{id_alternatif}/kriteria/{id_kriteria}', [\App\Http\Controllers\PenilaianKuratorController::class, 'storePenilaian'])->name('kurator.penilaian.store');
     Route::post('/kurator/penilaian/{id_periode}/selesaikan', [\App\Http\Controllers\PenilaianKuratorController::class, 'selesaikanKurasi'])->name('kurator.penilaian.selesaikan');
     Route::get('/kurator/penilaian/{id_periode}/selesai', [\App\Http\Controllers\PenilaianKuratorController::class, 'halamanSelesai'])->name('kurator.penilaian.selesai');
+
+    // ==========================================
+    // HASIL KURASI (LEADERBOARD)
+    // ==========================================
+    Route::get('/hasil-kurasi', [\App\Http\Controllers\HasilKurasiController::class, 'index'])->name('hasil.index');
+    Route::get('/hasil-kurasi/{id}', [\App\Http\Controllers\HasilKurasiController::class, 'detail'])->name('hasil.detail');
 });
