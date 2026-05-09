@@ -558,7 +558,7 @@
 
             const riArray = [0, 0, 0, 0.58, 0.9, 1.12, 1.24, 1.32, 1.41, 1.45, 1.49, 1.51, 1.48, 1.56, 1.57];
 
-            function calculateLiveAHP() {
+            function liveAHP() {
                 try {
                     const n = kriteriaData.length;
                     if (!n || n === 0) return;
@@ -646,7 +646,7 @@
                     } else {
                         $('#live-cr').removeClass('text-success').addClass('text-danger');
                         $('#live-status-badge').removeClass('badge-success').addClass('badge-danger').text('Tidak Konsisten');
-                        $('#live-cr-msg').removeClass('text-success').addClass('text-danger').html('✗ CR > 0.1 (Sesuaikan ulang)');
+                        $('#live-cr-msg').removeClass('text-success').addClass('text-danger').html('CR > 0.1 = Tidak Konsisten');
                         $('#btn-simpan-ahp').prop('disabled', true).removeClass('btn-primary').addClass('btn-danger');
                         $('#btn-content-simpan').html('<i data-lucide="alert-circle" class="mr-2"></i>CR Tidak Konsisten');
                     }
@@ -666,8 +666,8 @@
                 }
             }
 
-            $('input[type="radio"]').on('change', calculateLiveAHP);
-            calculateLiveAHP();
+            $('input[type="radio"]').on('change', liveAHP);
+            liveAHP();
 
             // AJAX Form Submission
             $('form').on('submit', function (e) {

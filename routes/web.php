@@ -56,4 +56,14 @@ Route::middleware('auth')->group(function () {
     // Manajemen Produk dalam Periode Kurasi
     Route::get('/admin/kurasi/{id}/produk', [\App\Http\Controllers\PeriodeKurasiController::class, 'manageProduk'])->name('admin.kurasi.produk');
     Route::post('/admin/kurasi/{id}/produk', [\App\Http\Controllers\PeriodeKurasiController::class, 'storeProduk'])->name('admin.kurasi.produk.store');
+
+    // ==========================================
+    // ROLE: KURATOR
+    // ==========================================
+    Route::get('/kurator/penilaian', [\App\Http\Controllers\PenilaianKuratorController::class, 'index'])->name('kurator.penilaian.index');
+    Route::get('/kurator/penilaian/{id_periode}', [\App\Http\Controllers\PenilaianKuratorController::class, 'detailPeriode'])->name('kurator.penilaian.detail');
+    Route::get('/kurator/penilaian/{id_periode}/workspace/{id_alternatif?}', [\App\Http\Controllers\PenilaianKuratorController::class, 'workspace'])->name('kurator.penilaian.workspace');
+    Route::post('/kurator/penilaian/{id_periode}/workspace/{id_alternatif}/kriteria/{id_kriteria}', [\App\Http\Controllers\PenilaianKuratorController::class, 'storePenilaian'])->name('kurator.penilaian.store');
+    Route::post('/kurator/penilaian/{id_periode}/selesaikan', [\App\Http\Controllers\PenilaianKuratorController::class, 'selesaikanKurasi'])->name('kurator.penilaian.selesaikan');
+    Route::get('/kurator/penilaian/{id_periode}/selesai', [\App\Http\Controllers\PenilaianKuratorController::class, 'halamanSelesai'])->name('kurator.penilaian.selesai');
 });

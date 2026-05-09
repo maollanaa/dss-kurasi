@@ -3,25 +3,98 @@ body {
   font-weight: 400;
 }
 
+// ============================================
+// Layouts
+// ============================================
 @import 'layouts/breakpoints';
 @import 'layouts/sidebar';
 @import 'layouts/navbar';
 @import 'layouts/modal';
 @import 'layouts/card';
 @import 'layouts/table';
+
+// ============================================
+// Pages
+// ============================================
 @import 'pages/login';
 @import 'pages/dashboard';
 @import 'pages/kriteria';
 @import 'pages/bobot';
 @import 'pages/produk';
+@import 'pages/penilaian-workspace';
 
+// ============================================
+// Global: Lucide Icons
+// ============================================
 .lucide {
-    width: 18px;
-    height: 18px;
-    stroke-width: 2;
-    vertical-align: middle;
+  width: 18px;
+  height: 18px;
+  stroke-width: 2;
+  vertical-align: middle;
 }
 
 .sidebar .lucide {
-    margin-right: 10px;
+  margin-right: 10px;
+}
+
+// ============================================
+// Global Utilities (shared across all pages)
+// ============================================
+
+// Product image thumbnail (used in tables & lists)
+.product-img-wrapper {
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  overflow: hidden;
+  background-color: #f8f9fa;
+  flex-shrink: 0;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  &--lg {
+    width: 80px;
+    height: 80px;
+  }
+}
+
+// Rounded button (for action buttons throughout the app)
+.btn-rounded {
+  border-radius: 8px;
+}
+
+// Width & Centering utilities
+.mx-auto-260 {
+  max-width: 260px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.mx-auto-420 {
+  max-width: 420px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+// Stat Card helper
+.stat-card-min {
+  min-width: 140px;
+}
+
+// Font weight helpers
+.font-weight-500 {
+  font-weight: 500;
+}
+
+.font-weight-600 {
+  font-weight: 600;
+}
+
+// Cursor
+.cursor-pointer {
+  cursor: pointer;
 }

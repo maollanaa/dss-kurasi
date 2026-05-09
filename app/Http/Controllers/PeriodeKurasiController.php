@@ -67,6 +67,12 @@ class PeriodeKurasiController extends Controller
         $tanggal = \Carbon\Carbon::parse($request->tanggal_kurasi);
 
         $periode = PeriodeKurasi::findOrFail($id);
+
+        // Guard: hanya bisa mengedit saat status 'belum'
+        if ($periode->status_kurasi !== 'belum') {
+            return redirect()->back()->with('error', 'Periode tidak dapat diedit karena sudah berstatus "' . ucfirst($periode->status_kurasi) . '".');
+        }
+
         $periode->update([
             'nama_periode' => $request->nama_periode,
             'tanggal_kurasi' => $request->tanggal_kurasi,
@@ -111,6 +117,11 @@ class PeriodeKurasiController extends Controller
     {
         $periode = PeriodeKurasi::findOrFail($id);
         
+        // Guard: hanya bisa mengubah produk saat status 'belum'
+        if ($periode->status_kurasi !== 'belum') {
+            return redirect()->back()->with('error', 'Produk tidak dapat diubah karena periode sudah berstatus "' . ucfirst($periode->status_kurasi) . '".');
+        }
+
         $request->validate([
             'alternatif_ids' => 'nullable|array',
             'alternatif_ids.*' => 'exists:alternatif,id_alternatif',
@@ -134,9 +145,12 @@ class PeriodeKurasiController extends Controller
             // Insert new selections
             $dataToInsert = [];
             foreach ($newIds as $alternatifId) {
+                $legalitas = \App\Models\AlternatifLegalitas::where('id_alternatif', $alternatifId)->first();
+                
                 $dataToInsert[] = [
                     'id_periode_kurasi' => $periode->id_periode_kurasi,
                     'id_alternatif' => $alternatifId,
+                    'status_lolos_legalitas' => $legalitas ? $legalitas->lolos_filter : false,
                     'created_at' => now(),
                     'updated_at' => now(),
                 ];

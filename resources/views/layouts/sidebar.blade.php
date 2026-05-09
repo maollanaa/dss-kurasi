@@ -51,15 +51,6 @@
                     <span class="nav-text">Manajemen Kurasi</span>
                 </h6>
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->is('admin/kurasi*') ? 'active' : '' }}"
-                        href="{{ url('/admin/kurasi') }}">
-                        <div class="nav-link-inner">
-                            <span class="nav-icon"><i data-lucide="calendar"></i></span>
-                            <span class="nav-text">Periode Kurasi</span>
-                        </div>
-                    </a>
-                </li>
-                <li class="nav-item">
                     <a class="nav-link {{ request()->is('admin/produk*') ? 'active' : '' }}"
                         href="{{ url('/admin/produk') }}">
                         <div class="nav-link-inner">
@@ -68,6 +59,16 @@
                         </div>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->is('admin/kurasi*') ? 'active' : '' }}"
+                        href="{{ url('/admin/kurasi') }}">
+                        <div class="nav-link-inner">
+                            <span class="nav-icon"><i data-lucide="calendar"></i></span>
+                            <span class="nav-text">Periode Kurasi</span>
+                        </div>
+                    </a>
+                </li>
+
             @endif
 
             @if(auth()->check() && auth()->user()->role === 'kurator')

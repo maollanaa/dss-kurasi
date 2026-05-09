@@ -47,88 +47,57 @@ Digunakan untuk menghitung **Ranking Produk** berdasarkan kesesuaian dengan prof
 Status: ✅ **DONE**
 - **Autentikasi**: Sistem login aman untuk Admin dan Kurator. Dilengkapi fitur *Remember Me* dan proteksi logout (modal konfirmasi).
 - **Dashboard Dynamic**: Tampilan berbeda untuk tiap role (Admin melihat statistik global, Kurator melihat tugas aktif).
-- **UI/UX Consistency**: Menggunakan Bootstrap 4 dengan SCSS kustom untuk tampilan premium.
+- **UI/UX Consistency**: Menggunakan Bootstrap 4 dengan SCSS kustom, AOS animations, dan standarisasi breadcrumb untuk tampilan premium.
+- **Efficient Styling**: Arsitektur SCSS modular dengan utility global untuk konsistensi antar-peran.
 
 ### 📋 Modul 2: Manajemen Kriteria & Skala
 Status: ✅ **DONE**
 - **CRUD Kriteria**: Admin dapat menambah/edit kriteria (Contoh: "Rasa", "Harga", "Higienitas").
 - **Kategorisasi Aspek**: Setiap kriteria dikelompokkan ke dalam "Kualitas Produk" atau "Kemasan".
 - **Target Nilai (1-5)**: Admin menetapkan skor ideal (profil target) untuk setiap kriteria.
-- **Manajemen Skala (Rubrik)**: Setiap kriteria memiliki 5 tingkatan rubrik (1-5). Admin bisa mengaktifkan/nonaktifkan skala tertentu. Skala yang nonaktif tidak akan muncul di form kurator.
+- **Manajemen Skala (Rubrik)**: Setiap kriteria memiliki 5 tingkatan rubrik (1-5). Skala yang nonaktif tidak akan muncul di form kurator.
 
 ### ⚖️ Modul 3: Kalkulasi AHP (Pembobotan)
-Status: ⏳ **PLANNED**
-- **Matriks Perbandingan**: Antarmuka berbentuk tabel $n \times n$ di mana Admin mengisikan tingkat kepentingan antar kriteria (Contoh: Rasa 3x lebih penting dari Kemasan).
-- **Auto-Reciprocal**: Jika Admin mengisi Rasa-Kemasan = 3, maka Kemasan-Rasa otomatis terisi 1/3.
-- **Uji Konsistensi (CR)**: Sistem menghitung $\lambda_{max}$, CI, dan CR. Jika CR > 0.1, sistem akan meminta Admin merevisi matriks karena tidak konsisten.
-- **Sesi AHP**: Setiap hasil perhitungan disimpan dalam satu "Sesi". Periode kurasi akan dikunci ke satu Sesi AHP tertentu agar perubahan bobot di masa depan tidak merusak history nilai masa lalu.
+Status: ✅ **DONE**
+- **Live Calculation Matrix**: Antarmuka matriks $n \times n$ dengan perhitungan real-time di sisi klien.
+- **Auto-Reciprocal**: Pengisian nilai otomatis berpasangan (A vs B = 3, maka B vs A = 0.33).
+- **Uji Konsistensi (CR)**: Perhitungan $\lambda_{max}$, CI, dan CR otomatis. Sistem memblokir simpan jika CR > 0.1.
+- **Sesi AHP Active**: Mendukung multi-sesi, namun hanya satu sesi aktif yang digunakan sebagai acuan pembobotan periode kurasi baru.
 
 ### 📦 Modul 4: Manajemen Produk & Legalitas
-Status: ⏳ **PLANNED** (Schema Update Pending)
-- **Data Master Produk**: Menyimpan nama produk, brand, nama pemilik, dan foto produk.
-- **Filter Legalitas (Entry Barrier)**: Produk **WAJIB** memenuhi syarat berikut untuk bisa lanjut ke tahap penilaian:
-    1. **NIB** (Wajib Ada)
-    2. **Sertifikat Halal** (Wajib Ada)
-    3. **BPOM atau SP-PIRT** (Wajib ada salah satu, diperbolehkan keduanya).
-- **Status Produk**: Produk yang tidak lolos legalitas akan ditandai secara visual dan tidak akan masuk ke antrean penilaian Kurator. (is_aktif)    
+Status: ✅ **DONE**
+- **Data Master Produk**: CRUD lengkap dengan upload foto dan tracking brand.
+- **Auto-Legalitas Generation**: Data legalitas otomatis terbuat saat produk ditambahkan.
+- **Filter Legalitas (Entry Barrier)**: Produk wajib lolos filter NIB, Halal, dan (BPOM atau PIRT).
+- **Dynamic Sync**: Perubahan legalitas pada data master otomatis sinkron ke periode kurasi berstatus "Belum". Periode yang sudah "Berlangsung/Selesai" tetap menggunakan snapshot data lama demi integritas penilaian.
 
 ### ✍️ Modul 5: Manajemen Periode & Penilaian (Kurator)
-Status: ⏳ **PLANNED**
-- **Batching (Periode Kurasi)**: Admin membuat periode (Contoh: "Kurasi IKM Sidoarjo 2024"). Admin memilih produk mana saja yang masuk ke periode ini.
-- **Antrean Penilaian**: Kurator melihat daftar produk dalam periode aktif yang belum dinilai.
-- **Form Penilaian**: Input nilai (1-5) berdasarkan rubrik aktif. Form menampilkan panduan deskripsi di setiap pilihan nilai untuk meminimalisir kesalahan input.
-- **Progress Tracker**: Menampilkan persentase jumlah produk yang sudah vs belum dinilai oleh Kurator.
+Status: ✅ **DONE**
+- **Batching (Periode Kurasi)**: Manajemen jadwal kurasi dengan sistem status (Belum, Berlangsung, Selesai).
+- **Locking Mechanism**: Admin dilarang mengedit detail periode atau daftar produk jika status sudah "Berlangsung/Selesai".
+- **Wizard Workspace**: Antarmuka penilaian kurator yang intuitif (wizard-style) dengan navigasi produk independen.
+- **Progress Tracker & Completion**: Pelacakan progres real-time dan alur penyelesaian tugas kurasi yang formal.
 
 ### 📊 Modul 6: Hasil, Ranking & Laporan
-Status: ⏳ **PLANNED**
-- **Mesin Perhitungan Profile Matching**: Sistem menghitung Gap (Aktual - Target), mengonversinya ke Bobot Gap, lalu mengalikannya dengan Bobot AHP untuk mendapatkan skor akhir.
-- **Leaderboard**: Tabel ranking produk dari skor tertinggi ke terendah.
-- **Catatan Evaluasi**: Produk yang mendapatkan nilai di bawah target akan mendapatkan catatan otomatis ("Perlu perbaikan di aspek X").
-- **Export PDF**: Generasi laporan resmi per periode yang memuat data statistik, bobot yang digunakan, dan tabel ranking lengkap.
+Status: 🏗️ **IN PROGRESS**
+- **Profile Matching Engine**: Kalkulasi gap dan konversi bobot sesuai parameter yang diset admin.
+- **Leaderboard**: Tabel ranking produk berdasarkan skor final gabungan AHP-PM.
+- **Export PDF**: Generasi laporan resmi per periode (sedang dalam tahap finalisasi).
 
 ---
 
-## 5. Development Roadmap (Next Steps)
+## 5. Development Roadmap (Updated)
 
-1. **Phase 1**: Update Database (Alternatif) & Implementasi CRUD Produk UMKM.
-2. **Phase 2**: Modul Filter Legalitas & Manajemen Periode.
-3. **Phase 3**: Kalkulasi AHP (Matriks & Konsistensi).
-4. **Phase 4**: Form Penilaian Kurator & Integrasi Profile Matching.
-5. **Phase 5**: Reporting & Export PDF.
-
----
-
-## 6. Alur Data & Arsitektur Database
-
-### A. Lifecycle Produk (Data Flow)
-
-```mermaid
-graph TD
-    A[Admin: Tambah Kriteria & Target] --> B[Admin: Sesi AHP & Hitung Bobot]
-    B --> C[Admin: Daftarkan Produk & Pemilik]
-    C --> D{Cek Legalitas Produk}
-    D -- Gagal NIB/Halal/BPOM-PIRT --> E[Status: Tidak Lolos Legalitas]
-    D -- Lolos Syarat Wajib --> F[Admin: Masukkan ke Periode Kurasi]
-    F --> G[Kurator: Input Nilai Aktual 1-5]
-    G --> H[Sistem: Hitung Gap & Bobot Gap]
-    H --> I[Sistem: Hitung Skor Final & Ranking]
-    I --> J[Hasil: Laporan & Export PDF]
-```
-
-### B. Arsitektur Tabel Core
-
-| Tabel | Fungsi dalam DSS | Keterangan |
-| :--- | :--- | :--- |
-| `kriteria` | Master data parameter penilaian. | Menyimpan `target_nilai` (Profil Ideal). |
-| `ahp_bobot` | Menyimpan hasil prioritas kriteria. | Hasil dari perbandingan berpasangan. |
-| `alternatif` | Data master produk UMKM. | Ditambahkan `nama_pemilik` & `foto_produk`. |
-| `penilaian_kurasi`| Transaksi nilai dari Kurator. | Menghubungkan Produk -> Kriteria -> Nilai. |
-| `hasil_kurasi` | Output akhir perhitungan. | Menyimpan `skor_final` dan `peringkat`. |
+1. **Phase 1 (Core)**: Setup Auth, Dashboard, & CRUD Kriteria. ✅
+2. **Phase 2 (AHP)**: Implementasi Matriks Perbandingan & Uji Konsistensi. ✅
+3. **Phase 3 (Product & Legal)**: CRUD Produk & Logika Filter Legalitas Otomatis. ✅
+4. **Phase 4 (Assessment)**: Manajemen Periode & Workspace Penilaian Kurator. ✅
+5. **Phase 5 (Calculation & Reporting)**: Integrasi Profile Matching & Export PDF. 🏗️
 
 ---
 
-## 7. Tech Stack
+## 6. Tech Stack
 - **Backend**: Laravel 11.x (PHP 8.2+)
-- **Frontend**: Blade, Bootstrap 4, SCSS, Lucide Icons
+- **Frontend**: Blade, Vanilla CSS + SCSS Modular, Lucide Icons, AOS (Animate On Scroll)
 - **Build Tool**: Vite
-- **Database**: MySQL
+- **Database**: MySQL 8.0

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Alternatif;
 use App\Models\AlternatifLegalitas;
+use App\Models\PeriodeAlternatif;
+use App\Models\PeriodeKurasi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
@@ -107,17 +109,24 @@ class ProdukController extends Controller
 
     public function updateLegalitas(Request $request, $id)
     {
+        // Auto-derive is_* from nomor fields: jika nomor diisi, otomatis tersedia
+        $request->merge([
+            'is_nib' => $request->no_nib ? 1 : $request->is_nib,
+            'is_bpom' => $request->no_bpom ? 1 : $request->is_bpom,
+            'is_sp_pirt' => ($request->no_sp_pirt_1 || $request->no_sp_pirt_2) ? 1 : $request->is_sp_pirt,
+            'is_sertifikat_halal' => $request->no_sertifikat_halal ? 1 : $request->is_sertifikat_halal,
+        ]);
+
         $validator = \Illuminate\Support\Facades\Validator::make($request->all(), [
             'is_nib' => 'required|boolean',
             'no_nib' => 'required_if:is_nib,1|nullable|numeric|digits:13',
             'is_bpom' => 'required|boolean',
-            'bpom_type' => 'required_if:is_bpom,1|nullable|in:MD,ML',
-            'no_bpom' => 'required_if:is_bpom,1|nullable|numeric|digits:12',
+            'no_bpom' => 'required_if:is_bpom,1|nullable|string|max:100',
             'is_sp_pirt' => 'required|boolean',
             'no_sp_pirt_1' => 'required_if:is_sp_pirt,1|nullable|numeric|digits:13',
             'no_sp_pirt_2' => 'required_if:is_sp_pirt,1|nullable|numeric|digits:2',
             'is_sertifikat_halal' => 'required|boolean',
-            'no_sertifikat_halal' => 'required_if:is_sertifikat_halal,1|nullable|numeric|digits:13',
+            'no_sertifikat_halal' => 'required_if:is_sertifikat_halal,1|nullable|numeric|digits:17',
             'keterangan' => 'nullable|string',
         ], [
             'required_if' => 'Nomor dokumen wajib diisi jika status tersedia.',
@@ -136,7 +145,7 @@ class ProdukController extends Controller
         
         $data = $request->except(['no_sp_pirt_1', 'no_sp_pirt_2']);
 
-        // 1. Format Sertifikat Halal: Input 13 digits -> Store IDXXXXXXXXXXXXX
+        // 1. Format Sertifikat Halal: Input 17 digits -> Store IDXXXXXXXXXXXXX
         if ($request->is_sertifikat_halal && $request->no_sertifikat_halal) {
             $data['no_sertifikat_halal'] = 'ID' . $request->no_sertifikat_halal;
         }
@@ -146,9 +155,9 @@ class ProdukController extends Controller
             $data['no_sp_pirt'] = $request->no_sp_pirt_1 . '-' . $request->no_sp_pirt_2;
         }
 
-        // 3. Format BPOM: Type (MD/ML) + 12 digits -> Store BPOM RI [TYPE] XXXXXXXXXXXX
+        // 3. BPOM: Just store the string directly
         if ($request->is_bpom && $request->no_bpom) {
-            $data['no_bpom'] = 'BPOM RI ' . $request->bpom_type . ' ' . $request->no_bpom;
+            $data['no_bpom'] = $request->no_bpom;
         }
 
         // Calculate lolos_filter
@@ -161,7 +170,24 @@ class ProdukController extends Controller
         // Repurpose is_aktif: Menandakan bahwa data legalitas sudah pernah diisi/disimpan
         $legalitas->alternatif->update(['is_aktif' => true]);
 
+        // Sync status_lolos_legalitas ke semua periode yang masih 'belum'
+        $this->syncLegalitasToPeriodesBeelum($id, $lolos);
+
         return redirect()->back()->with('success', 'Legalitas produk berhasil diperbarui.');
+    }
+
+    /**
+     * Propagate lolos_filter ke periode_alternatif yang masih berstatus 'belum'
+     */
+    private function syncLegalitasToPeriodesBeelum($idAlternatif, $lolosFilter)
+    {
+        $periodeIds = PeriodeKurasi::where('status_kurasi', 'belum')->pluck('id_periode_kurasi');
+
+        if ($periodeIds->isNotEmpty()) {
+            PeriodeAlternatif::where('id_alternatif', $idAlternatif)
+                ->whereIn('id_periode_kurasi', $periodeIds)
+                ->update(['status_lolos_legalitas' => $lolosFilter]);
+        }
     }
     public function downloadTemplate()
     {
@@ -199,13 +225,12 @@ class ProdukController extends Controller
         $sheet2->setCellValue('C1', 'NIB (Ya/Tidak)');
         $sheet2->setCellValue('D1', 'No NIB');
         $sheet2->setCellValue('E1', 'BPOM (Ya/Tidak)');
-        $sheet2->setCellValue('F1', 'Tipe BPOM (MD/ML)');
-        $sheet2->setCellValue('G1', 'No BPOM');
-        $sheet2->setCellValue('H1', 'SP-PIRT (Ya/Tidak)');
-        $sheet2->setCellValue('I1', 'No SP-PIRT (15 digit)');
-        $sheet2->setCellValue('J1', 'Halal (Ya/Tidak)');
-        $sheet2->setCellValue('K1', 'No Halal (13 digit)');
-        $sheet2->setCellValue('L1', 'Keterangan');
+        $sheet2->setCellValue('F1', 'No BPOM');
+        $sheet2->setCellValue('G1', 'SP-PIRT (Ya/Tidak)');
+        $sheet2->setCellValue('H1', 'No SP-PIRT (15 digit)');
+        $sheet2->setCellValue('I1', 'Halal (Ya/Tidak)');
+        $sheet2->setCellValue('J1', 'No Halal (17 digit)');
+        $sheet2->setCellValue('K1', 'Keterangan');
 
         // Formulasi otomatis dari sheet pertama (untuk 100 baris pertama)
         for ($i = 2; $i <= 101; $i++) {
@@ -214,13 +239,13 @@ class ProdukController extends Controller
         }
 
         // Style Header Sheet 2
-        $sheet2->getStyle('A1:L1')->getFont()->setBold(true);
-        foreach(range('A','L') as $columnID) {
+        $sheet2->getStyle('A1:K1')->getFont()->setBold(true);
+        foreach(range('A','K') as $columnID) {
             $sheet2->getColumnDimension($columnID)->setAutoSize(true);
         }
 
         // Format as Table
-        $table2 = new Table('A1:L101', 'TableLegalitas');
+        $table2 = new Table('A1:K101', 'TableLegalitas');
         $tableStyle2 = new TableStyle();
         $tableStyle2->setTheme(TableStyle::TABLE_STYLE_MEDIUM9);
         $tableStyle2->setShowRowStripes(true);
@@ -357,9 +382,9 @@ class ProdukController extends Controller
                     foreach ($rows2 as $row) {
                         if (empty($row[0]) || empty($row[1])) continue;
 
-                        // Pastikan ada data legalitas yang diisi (kolom C sampai L)
+                        // Pastikan ada data legalitas yang diisi (kolom C sampai K)
                         $hasLegalitasData = false;
-                        for ($i = 2; $i <= 11; $i++) {
+                        for ($i = 2; $i <= 10; $i++) {
                             if (isset($row[$i]) && trim($row[$i]) !== '') {
                                 $hasLegalitasData = true;
                                 break;
@@ -383,16 +408,15 @@ class ProdukController extends Controller
                             $no_nib = trim($row[3] ?? '') ?: null;
                             
                             $is_bpom = (strtolower(trim($row[4] ?? '')) === 'ya' || trim($row[4] ?? '') == '1');
-                            $bpom_type = strtoupper(trim($row[5] ?? ''));
-                            $no_bpom_raw = trim($row[6] ?? '');
+                            $no_bpom_raw = trim($row[5] ?? '');
                             
-                            $is_pirt = (strtolower(trim($row[7] ?? '')) === 'ya' || trim($row[7] ?? '') == '1');
-                            $no_pirt_raw = trim($row[8] ?? '');
+                            $is_pirt = (strtolower(trim($row[6] ?? '')) === 'ya' || trim($row[6] ?? '') == '1');
+                            $no_pirt_raw = trim($row[7] ?? '');
                             
-                            $is_halal = (strtolower(trim($row[9] ?? '')) === 'ya' || trim($row[9] ?? '') == '1');
-                            $no_halal_raw = trim($row[10] ?? '');
+                            $is_halal = (strtolower(trim($row[8] ?? '')) === 'ya' || trim($row[8] ?? '') == '1');
+                            $no_halal_raw = trim($row[9] ?? '');
                             
-                            $keterangan = trim($row[11] ?? '') ?: null;
+                            $keterangan = trim($row[10] ?? '') ?: null;
 
                             $updateData = [
                                 'is_nib' => $is_nib,
@@ -403,11 +427,11 @@ class ProdukController extends Controller
                                 'keterangan' => $keterangan,
                             ];
 
-                            // BPOM Formatting
-                            if ($is_bpom && $bpom_type && $no_bpom_raw) {
-                                $updateData['no_bpom'] = 'BPOM RI ' . $bpom_type . ' ' . $no_bpom_raw;
+                            // BPOM Formatting (Store raw string)
+                            if ($is_bpom && $no_bpom_raw) {
+                                $updateData['no_bpom'] = $no_bpom_raw;
                             } else {
-                                $updateData['no_bpom'] = $no_bpom_raw ?: null;
+                                $updateData['no_bpom'] = null;
                             }
 
                             // Halal Formatting

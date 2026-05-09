@@ -91,7 +91,7 @@
                                             <td class="py-3">
                                                 @if($p->kurator)
                                                     <div class="d-flex align-items-center">
-                                                        <div class="rounded-circle bg-primary-light text-primary d-flex align-items-center justify-content-center mr-2 font-weight-bold" style="width: 32px; height: 32px; font-size: 0.8rem;">
+                                                        <div class="avatar-circle avatar-circle--sm bg-primary-light text-primary mr-2">
                                                             {{ strtoupper(substr($p->kurator->name, 0, 2)) }}
                                                         </div>
                                                         <span>{{ $p->kurator->name }}</span>
@@ -111,13 +111,13 @@
                                             </td>
                                             <td class="py-3 pr-4 text-right">
                                                 <div class="btn-group shadow-sm rounded-pill overflow-hidden">
-                                                    <a href="{{ route('admin.kurasi.produk', $p->id_periode_kurasi) }}" class="btn btn-sm btn-white border-right" title="Kelola Produk">
-                                                        <i data-lucide="package" class="text-info mr-1"></i> Produk
+                                                    <a href="{{ route('admin.kurasi.produk', $p->id_periode_kurasi) }}" class="btn btn-sm btn-white border-right" title="{{ $p->status_kurasi == 'belum' ? 'Kelola Produk' : 'Lihat Produk' }}">
+                                                        <i data-lucide="{{ $p->status_kurasi == 'belum' ? 'package' : 'eye' }}" class="text-info mr-1"></i> {{ $p->status_kurasi == 'belum' ? 'Kelola' : 'Lihat' }}
                                                     </a>
+                                                    @if($p->status_kurasi == 'belum')
                                                     <button class="btn btn-sm btn-white border-right" data-toggle="modal" data-target="#editPeriodeModal{{ $p->id_periode_kurasi }}" title="Edit">
                                                         <i data-lucide="edit-2" class="text-primary"></i>
                                                     </button>
-                                                    @if($p->status_kurasi == 'belum')
                                                     <button class="btn btn-sm btn-white" data-toggle="modal" data-target="#deletePeriodeModal{{ $p->id_periode_kurasi }}" title="Hapus">
                                                         <i data-lucide="trash-2" class="text-danger"></i>
                                                     </button>

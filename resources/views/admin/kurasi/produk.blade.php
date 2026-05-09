@@ -18,12 +18,20 @@
             @include('layouts.navbar')
 
             <div class="px-4 py-3 dashboard-content" data-aos="fade-up">
+                @php $isReadonly = $periode->status_kurasi !== 'belum'; @endphp
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <div>
                         <h4 class="font-weight-bold text-primary mb-1">
-                            Kelola Produk: {{ $periode->nama_periode }}
+                            {{ $isReadonly ? 'Daftar' : 'Kelola' }} Produk: {{ $periode->nama_periode }}
                         </h4>
-                        <p class="text-muted small mb-0 mt-2">Pilih produk-produk yang akan dinilai pada periode kurasi: <strong class="text-dark">{{ $periode->nama_periode }}</strong>.</p>
+                        <p class="text-muted small mb-0 mt-2">
+                            @if($isReadonly)
+                                Produk yang terdaftar pada periode kurasi: <strong class="text-dark">{{ $periode->nama_periode }}</strong>.
+                                <span class="badge badge-{{ $periode->status_kurasi == 'selesai' ? 'success' : 'warning' }} ml-1">{{ ucfirst($periode->status_kurasi) }}</span>
+                            @else
+                                Pilih produk-produk yang akan dinilai pada periode kurasi: <strong class="text-dark">{{ $periode->nama_periode }}</strong>.
+                            @endif
+                        </p>
                     </div>
                 </div>
 
@@ -50,9 +58,11 @@
                         @csrf
                         <div class="card-header bg-white border-bottom py-3 d-flex justify-content-between align-items-center">
                             <h6 class="m-0 font-weight-bold text-dark"><i data-lucide="list-checks" class="mr-2 text-primary" style="width: 18px;"></i>Daftar Produk (Alternatif)</h6>
+                            @if(!$isReadonly)
                             <button type="submit" class="btn btn-primary btn-sm rounded-pill font-weight-bold px-4 shadow-sm">
                                 <i data-lucide="save" class="mr-2" style="width: 14px;"></i>Simpan Pilihan Produk
                             </button>
+                            @endif
                         </div>
                         <div class="card-body p-0">
                             <div class="table-responsive" style="max-height: 600px; overflow-y: auto;">
@@ -60,10 +70,12 @@
                                     <thead class="bg-light text-muted small uppercase tracking-wider sticky-top">
                                         <tr>
                                             <th class="border-0 px-4 py-3" style="width: 50px;">
+                                                @if(!$isReadonly)
                                                 <div class="custom-control custom-checkbox">
                                                     <input type="checkbox" class="custom-control-input" id="checkAll">
                                                     <label class="custom-control-label" for="checkAll"></label>
                                                 </div>
+                                                @endif
                                             </th>
                                             <th class="border-0 py-3">Produk & Brand</th>
                                             <th class="border-0 py-3">Pemilik</th>
@@ -74,6 +86,7 @@
                                         @forelse($alternatifs as $alt)
                                             <tr>
                                                 <td class="px-4 py-3">
+                                                    @if(!$isReadonly)
                                                     <div class="custom-control custom-checkbox">
                                                         <input type="checkbox" class="custom-control-input checkbox-item" 
                                                             id="check_{{ $alt->id_alternatif }}" 
@@ -82,10 +95,17 @@
                                                             {{ in_array($alt->id_alternatif, $selectedAlternatifIds) ? 'checked' : '' }}>
                                                         <label class="custom-control-label" for="check_{{ $alt->id_alternatif }}"></label>
                                                     </div>
+                                                    @else
+                                                        @if(in_array($alt->id_alternatif, $selectedAlternatifIds))
+                                                            <i data-lucide="check-circle-2" class="text-success" style="width: 18px; height: 18px;"></i>
+                                                        @else
+                                                            <i data-lucide="circle" class="text-muted" style="width: 18px; height: 18px; opacity: 0.3;"></i>
+                                                        @endif
+                                                    @endif
                                                 </td>
                                                 <td class="py-3">
                                                     <div class="d-flex align-items-center">
-                                                        <div class="product-img-wrapper mr-3 rounded shadow-sm overflow-hidden" style="width: 48px; height: 48px; background: #f8f9fa;">
+                                                        <div class="product-img-wrapper mr-3 shadow-sm">
                                                             @if($alt->foto_produk)
                                                                 <img src="{{ asset('storage/' . $alt->foto_produk) }}" alt="{{ $alt->nama_produk }}" class="w-100 h-100 object-fit-cover">
                                                             @else

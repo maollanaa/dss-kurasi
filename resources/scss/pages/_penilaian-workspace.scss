@@ -1,0 +1,170 @@
+// ============================================
+// Workspace Penilaian Kurator
+// ============================================
+
+// Full-screen lock (no body scroll)
+body.workspace-page {
+  overflow: hidden;
+  height: 100%;
+}
+
+// Main flex container
+.workspace-main {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  > .navbar {
+    flex-shrink: 0;
+  }
+}
+
+.workspace-container {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+// ============================================
+// Panel Kiri (Form Penilaian)
+// ============================================
+.panel-kiri {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.panel-kiri-content {
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+.panel-kiri-footer {
+  flex-shrink: 0;
+  background: #fff;
+}
+
+// ============================================
+// Panel Kanan (Antrean Produk)
+// ============================================
+.panel-kanan {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background-color: #f8f9fa;
+  border-left: 1px solid #e9ecef;
+}
+
+.panel-kanan-header {
+  flex-shrink: 0;
+}
+
+.antrean-list {
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+.panel-kanan-footer {
+  flex-shrink: 0;
+  background-color: #f8f9fa;
+}
+
+// ============================================
+// Produk List Item (Sidebar kanan)
+// ============================================
+.produk-list-item {
+  transition: all 0.2s ease;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  border: 1px solid transparent;
+
+  &:hover {
+    background-color: #f1f3f5;
+    text-decoration: none;
+  }
+
+  &.active {
+    background-color: #e7f1ff;
+    border-color: #b8daff;
+  }
+}
+
+// ============================================
+// Wizard Kriteria Card
+// ============================================
+.kriteria-card {
+  display: none;
+  animation: fadeInKriteria 0.3s ease;
+
+  &.active {
+    display: block;
+  }
+}
+
+@keyframes fadeInKriteria {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// ============================================
+// Skala Penilaian Options
+// ============================================
+.skala-option {
+  cursor: pointer;
+  border: 2px solid #dee2e6;
+  border-radius: 12px;
+  transition: all 0.2s;
+
+  &:hover {
+    border-color: #adb5bd;
+    background-color: #f8f9fa;
+  }
+
+  &.selected {
+    border-color: #0d6efd;
+    background-color: #f0f7ff;
+  }
+}
+
+.skala-radio {
+  display: none;
+}
+
+// ============================================
+// Halaman Selesai Kurasi
+// ============================================
+.kurasi-selesai-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 120px);
+
+  .selesai-card {
+    max-width: 560px;
+    border-radius: 16px;
+    border: none;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+  }
+
+  .selesai-icon-wrapper {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #28a745, #20c997);
+  }
+}

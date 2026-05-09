@@ -33,15 +33,8 @@
                             $no_pirt_2 = preg_replace('/[^0-9]/', '', $pirt_parts[1] ?? '');
                         }
                         
-                        // Handle BPOM prefix and type
-                        $no_bpom = '';
-                        $bpom_type = 'MD';
-                        if ($leg && $leg->no_bpom) {
-                            $no_bpom = preg_replace('/[^0-9]/', '', $leg->no_bpom);
-                            if (strpos($leg->no_bpom, 'ML') !== false) {
-                                $bpom_type = 'ML';
-                            }
-                        }
+                        // Handle BPOM
+                        $no_bpom = $leg ? $leg->no_bpom : '';
                     @endphp
 
                     {{-- NIB --}}
@@ -78,9 +71,9 @@
                             <input type="text" class="form-control form-control-sm border-0 px-2 @error('no_sertifikat_halal') is-invalid @enderror" 
                                 id="input-no_sertifikat_halal-{{ $item->id_alternatif }}"
                                 name="no_sertifikat_halal" value="{{ old('no_sertifikat_halal', $no_halal) }}" 
-                                placeholder="13 digit angka" inputmode="numeric" maxlength="13" style="border-radius: 0 50px 50px 0;">
+                                placeholder="17 digit angka" inputmode="numeric" maxlength="17" style="border-radius: 0 50px 50px 0;">
                         </div>
-                        <small class="text-muted mt-1 d-block"><i data-lucide="info" class="mr-1" style="width: 10px;"></i> Masukkan 13 digit angka saja</small>
+                        <small class="text-muted mt-1 d-block"><i data-lucide="info" class="mr-1" style="width: 10px;"></i> Masukkan 17 digit angka saja</small>
                     </div>
 
                     {{-- BPOM & PIRT (One of) --}}
@@ -96,19 +89,11 @@
                                     <label class="custom-control-label" for="is_bpom-{{ $item->id_alternatif }}"></label>
                                 </div>
                             </div>
-                            <div class="input-group input-group-sm mb-1">
-                                <div class="input-group-prepend">
-                                    <select name="bpom_type" class="custom-select border-0 bg-white small font-weight-bold" style="border-radius: 50px 0 0 50px; width: 80px;">
-                                        <option value="MD" {{ old('bpom_type', $bpom_type) == 'MD' ? 'selected' : '' }}>MD</option>
-                                        <option value="ML" {{ old('bpom_type', $bpom_type) == 'ML' ? 'selected' : '' }}>ML</option>
-                                    </select>
-                                </div>
-                                <input type="text" class="form-control form-control-sm border-0 px-3 @error('no_bpom') is-invalid @enderror" 
-                                    id="input-no_bpom-{{ $item->id_alternatif }}"
-                                    name="no_bpom" value="{{ old('no_bpom', $no_bpom) }}" 
-                                    placeholder="12 digit angka" inputmode="numeric" maxlength="12" style="border-radius: 0 50px 50px 0;">
-                            </div>
-                            <small class="text-muted d-block"><i data-lucide="info" class="mr-1" style="width: 10px;"></i> Wajib 12 digit angka</small>
+                            <input type="text" class="form-control form-control-sm border-0 px-3 rounded-pill @error('no_bpom') is-invalid @enderror" 
+                                id="input-no_bpom-{{ $item->id_alternatif }}"
+                                name="no_bpom" value="{{ old('no_bpom', $no_bpom) }}" 
+                                placeholder="Nomor BPOM">
+                            <small class="text-muted mt-1 d-block"><i data-lucide="info" class="mr-1" style="width: 10px;"></i> Masukkan nomor BPOM beserta huruf (jika ada)</small>
                         </div>
 
                         <div class="mb-0">
@@ -195,11 +180,10 @@
                 // 1. NIB (13)
                 checkField('is_nib-{{ $item->id_alternatif }}', ['no_nib'], 13, 'NIB');
                 
-                // 2. Halal (13)
-                checkField('is_sertifikat_halal-{{ $item->id_alternatif }}', ['no_sertifikat_halal'], 13, 'Sertifikat Halal');
+                // 2. Halal (17)
+                checkField('is_sertifikat_halal-{{ $item->id_alternatif }}', ['no_sertifikat_halal'], 17, 'Sertifikat Halal');
                 
-                // 3. BPOM (12)
-                checkField('is_bpom-{{ $item->id_alternatif }}', ['no_bpom'], 12, 'BPOM');
+                // (BPOM is now arbitrary string, so no digit length check)
                 
                 // 4. SP-PIRT (13 & 2)
                 checkField('is_sp_pirt-{{ $item->id_alternatif }}', ['no_sp_pirt_1', 'no_sp_pirt_2'], [13, 2], 'SP-PIRT');
