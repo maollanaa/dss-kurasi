@@ -74,7 +74,7 @@
                                         <div class="small" style="line-height: 1.6;">
                                             <strong class="text-dark d-block mb-1">Panduan Pengisian Form
                                                 Perbandingan</strong>
-                                            Pilih angka pada slider ke arah kriteria yang menurut Anda
+                                            Pilih angka pada slider ke arah kriteria yang
                                             <strong>lebih penting</strong>. Semakin jauh angkanya, semakin mutlak
                                             kepentingannya. Pilih angka <strong>1</strong> (tengah) jika keduanya sama
                                             penting.

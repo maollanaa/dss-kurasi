@@ -72,4 +72,5 @@ Route::middleware('auth')->group(function () {
     // ==========================================
     Route::get('/hasil-kurasi', [\App\Http\Controllers\HasilKurasiController::class, 'index'])->name('hasil.index');
     Route::get('/hasil-kurasi/{id}', [\App\Http\Controllers\HasilKurasiController::class, 'detail'])->name('hasil.detail');
+    Route::get('/hasil-kurasi/{id}/cetak', [\App\Http\Controllers\HasilKurasiController::class, 'cetak'])->name('hasil.cetak');
 });

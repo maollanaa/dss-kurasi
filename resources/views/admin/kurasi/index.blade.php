@@ -54,7 +54,7 @@
 
                 @if(!$activeAHP)
                     <div class="alert alert-warning mb-4 border-0 shadow-sm">
-                        <i data-lucide="alert-triangle" class="mr-2"></i> <strong>Perhatian:</strong> Saat ini tidak ada sesi AHP yang aktif. Anda harus memiliki setidaknya satu sesi AHP aktif untuk membuat Periode Kurasi baru.
+                        <i data-lucide="alert-triangle" class="mr-2"></i> <strong>Perhatian:</strong> Saat ini tidak ada bobot kriteria yang aktif. Silahkan tentukan bobot kriteria terlebih dahulu.
                     </div>
                 @endif
 

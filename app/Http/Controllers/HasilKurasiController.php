@@ -37,6 +37,34 @@ class HasilKurasiController extends Controller
      */
     public function detail($id)
     {
+        $data = $this->prepareDetailData($id);
+        
+        if ($data instanceof \Illuminate\Http\RedirectResponse) {
+            return $data;
+        }
+
+        return view('admin.hasil.detail', $data);
+    }
+
+    /**
+     * Cetak Laporan Hasil Kurasi.
+     */
+    public function cetak($id)
+    {
+        $data = $this->prepareDetailData($id);
+        
+        if ($data instanceof \Illuminate\Http\RedirectResponse) {
+            return $data;
+        }
+
+        return view('admin.hasil.cetak', $data);
+    }
+
+    /**
+     * Persiapkan data untuk detail dan cetak.
+     */
+    private function prepareDetailData($id)
+    {
         $user = Auth::user();
         $periode = PeriodeKurasi::with(['kurator', 'ahpSesi.bobot.kriteria', 'periodeAlternatif.alternatif.legalitas'])
             ->findOrFail($id);
@@ -54,8 +82,8 @@ class HasilKurasiController extends Controller
         $bobots = AhpBobot::where('id_ahp_sesi', $periode->id_ahp_sesi)
             ->pluck('bobot_prioritas', 'id_kriteria');
 
-        // 2. Ambil semua kriteria
-        $kriterias = Kriteria::orderBy('urutan_tampil')->get();
+        // 2. Ambil semua kriteria beserta skala untuk deskripsi target
+        $kriterias = Kriteria::with('scales')->orderBy('urutan_tampil')->get();
 
         // 3. Hitung Skor untuk setiap alternatif dalam periode
         $results = [];
@@ -66,7 +94,6 @@ class HasilKurasiController extends Controller
             $breakdown = [];
 
             foreach ($kriterias as $k) {
-                // Ambil nilai aktual dari penilaian_kurasi
                 $penilaian = PenilaianKurasi::where('id_periode_alternatif', $pa->id_periode_alternatif)
                     ->where('id_kriteria', $k->id_kriteria)
                     ->first();
@@ -75,24 +102,24 @@ class HasilKurasiController extends Controller
                 $nilaiTarget = $k->target_nilai;
                 $gap = $nilaiAktual - $nilaiTarget;
 
-                // Cek Gap Negatif untuk evaluasi & kelulusan
                 if ($gap < 0) {
                     $hasNegativeGap = true;
+                    
+                    // Ambil deskripsi skala untuk target nilai
+                    $targetScale = $k->scales->where('nilai_skala', $nilaiTarget)->first();
+                    $targetDesc = $targetScale ? $targetScale->deskripsi_skala : 'Standar target belum tercapai';
+
                     $evaluations[] = [
                         'kriteria' => $k->nama_kriteria,
                         'aktual' => $nilaiAktual,
                         'target' => $nilaiTarget,
+                        'target_desc' => $targetDesc,
                         'gap' => $gap
                     ];
                 }
 
-                // Mapping Bobot Gap
                 $bobotGap = $this->mapGapToWeight($gap);
-                
-                // Ambil bobot AHP untuk kriteria ini
                 $ahpWeight = $bobots[$k->id_kriteria] ?? 0;
-
-                // Hitung skor kriteria: Bobot Gap * Bobot AHP
                 $skorKriteria = $bobotGap * $ahpWeight;
                 $totalScore += $skorKriteria;
 
@@ -113,15 +140,10 @@ class HasilKurasiController extends Controller
             
             if ($legalitas && !$legalitas->lolos_filter) {
                 if (!$legalitas->is_nib) $missingDocs[] = 'NIB';
-                
-                // Mekanisme: Harus memiliki salah satu antara BPOM atau SP-PIRT
                 if (!$legalitas->is_bpom && !$legalitas->is_sp_pirt) {
                     $missingDocs[] = 'BPOM / SP-PIRT';
                 }
-                
                 if (!$legalitas->is_sertifikat_halal) $missingDocs[] = 'Sertifikat Halal';
-                
-                // Jika tidak lolos legalitas, skor akhir dipaksa 0
                 $totalScore = 0;
             }
 
@@ -143,15 +165,11 @@ class HasilKurasiController extends Controller
             return ($a->total_score > $b->total_score) ? -1 : 1;
         });
 
-        return view('admin.hasil.detail', compact('periode', 'kriterias', 'results', 'bobots'));
+        return compact('periode', 'kriterias', 'results', 'bobots');
     }
 
     /**
      * Map Gap value to Profile Matching weight.
-     * 0 -> 5
-     * 1 -> 4.5
-     * -1 -> 4
-     * ...
      */
     private function mapGapToWeight($gap)
     {

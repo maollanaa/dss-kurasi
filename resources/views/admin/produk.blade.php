@@ -60,7 +60,7 @@
                                             <th class="py-3">Pemilik</th>
                                             <th class="py-3 text-center">Dokumen</th>
                                             <th class="py-3 text-center">Data Legalitas</th>
-                                            <th class="py-3 text-center">Filter Kurasi</th>
+                                            <th class="py-3 text-center">Verifikasi Legalitas</th>
                                             <th class="py-3 pr-4 text-right">Aksi</th>
                                         </tr>
                                     </thead>

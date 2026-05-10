@@ -14,7 +14,7 @@
                     <div class="d-flex justify-content-between align-items-center mb-4">
                         <div>
                             <h4 class="font-weight-bold text-primary mb-1">Tugas Kurasi</h4>
-                            <p class="text-muted small mb-0">Daftar periode kurasi yang ditugaskan kepada Anda.</p>
+                            <p class="text-muted small mb-0">Daftar periode kurasi yang tersedia.</p>
                         </div>
                     </div>
 
@@ -70,7 +70,7 @@
                                     <div class="card-body text-center py-5 text-muted">
                                         <div class="d-flex flex-column align-items-center">
                                             <i data-lucide="calendar" class="mb-2" style="width: 32px; height: 32px; opacity: 0.5;"></i>
-                                            <p class="mb-0">Belum ada periode kurasi yang ditugaskan kepada Anda.</p>
+                                            <p class="mb-0">Belum ada periode kurasi yang tersedia.</p>
                                         </div>
                                     </div>
                                 </div>

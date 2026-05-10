@@ -36,7 +36,7 @@
                                 @endif
                             </div>
                             <div class="d-flex justify-content-between mb-0">
-                                <span class="text-muted small">Filter Kurasi:</span>
+                                <span class="text-muted small">Verifikasi Legalitas:</span>
                                 @if($item->legalitas && $item->legalitas->lolos_filter)
                                     <span class="badge badge-pill badge-success px-3">Lolos</span>
                                 @else

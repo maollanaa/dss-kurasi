@@ -25,10 +25,9 @@
                         <p class="text-muted small mb-0">Hasil akhir perhitungan Profile Matching dan integrasi Bobot AHP.</p>
                     </div>
                     <div class="d-flex">
-                        <button onclick="window.print()" class="btn btn-outline-primary btn-rounded mr-2 px-3">
-                            <i data-lucide="printer" class="mr-1" style="width: 16px;"></i> Cetak Hasil Penilaian Kurasi
-                        </button>
-                        
+                        <a href="{{ route('hasil.cetak', $periode->id_periode_kurasi) }}" target="_blank" class="btn btn-outline-primary btn-rounded mr-2 px-3">
+                            <i data-lucide="printer" class="mr-1" style="width: 16px;"></i> Cetak Laporan Penilaian
+                        </a>
                     </div>
                 </div>
 
@@ -123,7 +122,7 @@
                                                                                         <span class="badge badge-danger px-3 py-2 mr-2 mb-2" style="font-size: 0.8rem;">{{ $doc }}</span>
                                                                                     @endforeach
                                                                                 </div>
-                                                                                <p class="small text-muted mb-0 font-italic"><strong>Rekomendasi:</strong> Demi memenuhi standar regulasi dan keamanan pangan, silakan lengkapi dokumen yang diperlukan. Anda dapat kembali mengajukan produk ini pada periode kurasi mendatang setelah persyaratan dokumen terpenuhi.</p>
+                                                                                <p class="small text-muted mb-0 font-italic"><strong>Rekomendasi:</strong> Demi memenuhi standar regulasi dan keamanan pangan, silakan lengkapi dokumen yang diperlukan. Produk dapat kembali mengajukan produk ini pada periode kurasi mendatang setelah persyaratan dokumen terpenuhi.</p>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -146,7 +145,7 @@
                                                                                                 <i data-lucide="x" class="text-danger mr-2 mt-1" style="width: 14px;"></i>
                                                                                                 <div class="small">
                                                                                                     <div class="font-weight-bold text-dark">{{ $eval['kriteria'] }}</div>
-                                                                                                    <div class="text-muted">Skor {{ $eval['aktual'] }} (Target {{ $eval['target'] }}).</div>
+                                                                                                    <div class="text-muted">Belum memenuhi standar: "{{ $eval['target_desc'] }}".</div>
                                                                                                 </div>
                                                                                             </div>
                                                                                         @endforeach
@@ -154,7 +153,7 @@
                                                                                 </div>
                                                                                 <div class="saran-box p-2 bg-white rounded border border-warning">
                                                                                     <div class="small font-weight-bold text-warning mb-1"><i data-lucide="lightbulb" class="mr-1" style="width: 12px;"></i> Rekomendasi:</div>
-                                                                                    <p class="small text-muted mb-0 font-italic">Produk Anda memiliki potensi besar. Kami menyarankan untuk melakukan peningkatan kualitas pada kriteria yang telah disebutkan di atas agar memiliki daya saing yang lebih tinggi pada periode kurasi selanjutnya.</p>
+                                                                                    <p class="small text-muted mb-0 font-italic">Produk inimemiliki potensi besar. Kami menyarankan untuk melakukan peningkatan kualitas pada kriteria yang telah disebutkan di atas agar memiliki daya saing yang lebih tinggi pada periode kurasi selanjutnya.</p>
                                                                                 </div>
                                                                             @else
                                                                                 <div class="text-center py-3">
