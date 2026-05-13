@@ -62,7 +62,69 @@ class AuthController extends Controller
 
             return view('admin.dashboard', compact('totalKriteria', 'totalPeriodeKurasi', 'totalProduk', 'kriteriaBobots'));
         } elseif ($user->role === 'kurator') {
-            return view('kurator.dashboard');
+            $userId = Auth::id();
+            
+            // 1. Get recent active task (berlangsung or belum)
+            $recentActiveTask = \App\Models\PeriodeKurasi::where('id_kurator', $userId)
+                ->whereIn('status_kurasi', ['berlangsung', 'belum'])
+                ->orderBy('created_at', 'desc')
+                ->first();
+                
+            $progress = [
+                'assessed' => 0,
+                'total' => 0,
+                'percentage' => 0
+            ];
+            
+            if ($recentActiveTask) {
+                $totalKriteria = \App\Models\Kriteria::count();
+                $totalProdukLolos = \App\Models\PeriodeAlternatif::where('id_periode_kurasi', $recentActiveTask->id_periode_kurasi)
+                    ->where('status_lolos_legalitas', true)
+                    ->count();
+                
+                $produkDinilai = 0;
+                if ($totalProdukLolos > 0 && $totalKriteria > 0) {
+                    $paIds = \App\Models\PeriodeAlternatif::where('id_periode_kurasi', $recentActiveTask->id_periode_kurasi)
+                        ->where('status_lolos_legalitas', true)
+                        ->pluck('id_periode_alternatif');
+                        
+                    foreach ($paIds as $paId) {
+                        $count = \App\Models\PenilaianKurasi::where('id_periode_alternatif', $paId)
+                            ->where('dinilai_oleh', $userId)
+                            ->count();
+                        if ($count >= $totalKriteria) {
+                            $produkDinilai++;
+                        }
+                    }
+                }
+                
+                $progress = [
+                    'assessed' => $produkDinilai,
+                    'total' => $totalProdukLolos,
+                    'percentage' => $totalProdukLolos > 0 ? round(($produkDinilai / $totalProdukLolos) * 100) : 0
+                ];
+            }
+            
+            // 2. Stats
+            $activeTasksCount = \App\Models\PeriodeKurasi::where('id_kurator', $userId)
+                ->whereIn('status_kurasi', ['berlangsung', 'belum'])
+                ->count();
+                
+            $completedTasksCount = \App\Models\PeriodeKurasi::where('id_kurator', $userId)
+                ->where('status_kurasi', 'selesai')
+                ->count();
+                
+            $totalProductsCount = \App\Models\PenilaianKurasi::where('dinilai_oleh', $userId)
+                ->distinct('id_periode_alternatif')
+                ->count();
+
+            return view('kurator.dashboard', compact(
+                'recentActiveTask', 
+                'progress', 
+                'activeTasksCount', 
+                'completedTasksCount', 
+                'totalProductsCount'
+            ));
         }
 
         // Add error handling if role is not recognized
