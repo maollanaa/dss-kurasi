@@ -1,21 +1,24 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Laporan Hasil Kurasi - {{ $periode->nama_periode }}</title>
-    
+
     {{-- Google Fonts: Poppins --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
     {{-- Bootstrap 4 CSS --}}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
-    
+
     {{-- Vite Assets --}}
     @vite(['resources/scss/app.scss'])
 </head>
+
 <body class="report-body">
     <div class="no-print mb-4 text-right">
         <button onclick="window.print()" class="btn btn-primary shadow-sm px-4">
@@ -59,72 +62,140 @@
     <table class="table-report">
         <thead>
             <tr>
-                <th style="width: 5%;">No</th>
-                <th style="width: 30%;">Nama Produk</th>
-                <th style="width: 25%;">Brand / UMKM</th>
-                <th style="width: 25%;">Nama Pemilik</th>
-                <th style="width: 15%;">Skor Akhir</th>
+                <th style="width: 5%; text-align: center;">No</th>
+                <th style="width: 25%;">Nama Produk & Brand/UMKM</th>
+                <th style="width: 20%;">Nama Pemilik</th>
+                <th style="width: 15%; text-align: center;">Skor Akhir</th>
+                <th style="width: 35%;">Keterangan</th>
             </tr>
         </thead>
         <tbody>
             @php $noLolos = 1; @endphp
             @foreach($results as $res)
-                @if($res->status_lolos)
+                @if($res->status_lolos === 'lolos')
                     <tr>
                         <td class="text-center">{{ $noLolos++ }}</td>
-                        <td><strong>{{ $res->alternatif->nama_produk }}</strong></td>
-                        <td>{{ $res->alternatif->brand ?? $res->alternatif->nama_brand_umkm }}</td>
+                        <td>
+                            <strong>{{ $res->alternatif->nama_produk }}</strong><br>
+                            <small class="text-muted">{{ $res->alternatif->brand ?? $res->alternatif->nama_brand_umkm }}</small>
+                        </td>
                         <td>{{ $res->alternatif->nama_pemilik }}</td>
                         <td class="text-center font-weight-bold text-success">{{ number_format($res->total_score, 3) }}</td>
+                        <td>
+                            <span class="text-success font-weight-bold" style="font-size: 0.85rem;">Memenuhi Standar</span>
+                        </td>
                     </tr>
                 @endif
             @endforeach
             @if($noLolos == 1)
                 <tr>
-                    <td colspan="5" class="text-center text-muted font-italic">Tidak ada produk yang dinyatakan lolos.</td>
+                    <td colspan="5" class="text-center text-muted font-italic">Tidak ada produk yang dinyatakan lolos murni.
+                    </td>
                 </tr>
             @endif
         </tbody>
     </table>
 
-    {{-- TABEL 2: PRODUK TIDAK LOLOS --}}
-    <h5 class="font-weight-bold mb-3" style="text-decoration: underline;">II. Daftar Produk Tidak Lolos & Catatan Evaluasi</h5>
+    {{-- TABEL 2: PRODUK LOLOS BERSYARAT --}}
+    <h5 class="font-weight-bold mb-3" style="text-decoration: underline;">II. Daftar Produk Lolos Kurasi Bersyarat</h5>
     <table class="table-report">
         <thead>
             <tr>
-                <th style="width: 5%;">No</th>
-                <th style="width: 20%;">Nama Produk</th>
-                <th style="width: 15%;">Brand / UMKM</th>
-                <th style="width: 60%;">Evaluasi & Saran Perbaikan</th>
+                <th style="width: 5%; text-align: center;">No</th>
+                <th style="width: 25%;">Nama Produk & Brand/UMKM</th>
+                <th style="width: 20%;">Nama Pemilik</th>
+                <th style="width: 15%; text-align: center;">Skor Akhir</th>
+                <th style="width: 35%;">Catatan Perbaikan</th>
+            </tr>
+        </thead>
+        <tbody>
+            @php $noLolosBersyarat = 1; @endphp
+            @foreach($results as $res)
+                @if($res->status_lolos === 'lolos_bersyarat')
+                    <tr>
+                        <td class="text-center">{{ $noLolosBersyarat++ }}</td>
+                        <td>
+                            <strong>{{ $res->alternatif->nama_produk }}</strong><br>
+                            <small class="text-muted">{{ $res->alternatif->brand ?? $res->alternatif->nama_brand_umkm }}</small>
+                        </td>
+                        <td>{{ $res->alternatif->nama_pemilik }}</td>
+                        <td class="text-center font-weight-bold text-warning">{{ number_format($res->total_score, 3) }}</td>
+                        <td>
+                            <div class="eval-note text-justify">
+                                <div class="font-weight-bold mb-1" style="font-size: 0.85rem;">Aspek yang perlu disesuaikan:
+                                </div>
+                                @foreach($res->evaluations as $eval)
+                                    <div class="eval-item mb-1">- <strong>{{ $eval['kriteria'] }}</strong>: Belum mencapai standar
+                                        <!-- (seharusnya: <em>{{ $eval['target_desc'] }}</em>)</div> -->
+                                @endforeach
+                                    <div class="mt-2 text-muted" style="font-size: 0.8rem;"><em>Rekomendasi: Lakukan penyesuaian
+                                            pada aspek di atas agar siap retail.</em></div>
+                                </div>
+                        </td>
+                    </tr>
+                @endif
+            @endforeach
+            @if($noLolosBersyarat == 1)
+                <tr>
+                    <td colspan="5" class="text-center text-muted font-italic">Tidak ada produk yang dinyatakan lolos
+                        bersyarat.</td>
+                </tr>
+            @endif
+        </tbody>
+    </table>
+
+    {{-- TABEL 3: PRODUK TIDAK LOLOS --}}
+    <h5 class="font-weight-bold mb-3" style="text-decoration: underline;">III. Daftar Produk Tidak Lolos & Catatan
+        Evaluasi</h5>
+    <table class="table-report">
+        <thead>
+            <tr>
+                <th style="width: 5%; text-align: center;">No</th>
+                <th style="width: 25%;">Nama Produk & Brand/UMKM</th>
+                <th style="width: 20%;">Nama Pemilik</th>
+                <th style="width: 15%; text-align: center;">Skor Akhir</th>
+                <th style="width: 35%;">Catatan Evaluasi</th>
             </tr>
         </thead>
         <tbody>
             @php $noTidakLolos = 1; @endphp
             @foreach($results as $res)
-                @if(!$res->status_lolos)
+                @if($res->status_lolos === 'tidak_lolos')
                     <tr>
                         <td class="text-center">{{ $noTidakLolos++ }}</td>
                         <td>
                             <strong>{{ $res->alternatif->nama_produk }}</strong><br>
-                            <small class="text-muted">{{ $res->alternatif->nama_pemilik }}</small>
+                            <small class="text-muted">{{ $res->alternatif->brand ?? $res->alternatif->nama_brand_umkm }}</small>
                         </td>
-                        <td>{{ $res->alternatif->brand ?? $res->alternatif->nama_brand_umkm }}</td>
+                        <td>{{ $res->alternatif->nama_pemilik }}</td>
+                        <td class="text-center font-weight-bold text-danger">
+                            @if(!$res->is_lolos_legalitas)
+                                <span style="font-size: 0.8rem;">Gagal<br>Legalitas</span>
+                            @else
+                                {{ number_format($res->total_score, 3) }}
+                            @endif
+                        </td>
                         <td>
                             @if(!$res->is_lolos_legalitas)
-                                <div class="text-danger font-weight-bold small mb-1">GAGAL TAHAP LEGALITAS</div>
-                                <span class="eval-note text-justify">
-                                    Dokumen wajib yang belum lengkap: <strong>{{ implode(', ', $res->missing_docs) }}</strong>.<br>
-                                    <em>Rekomendasi: Demi memenuhi standar regulasi dan keamanan pangan, silakan lengkapi dokumen yang diperlukan. Produk dapat kembali mengajukan produk ini pada periode kurasi mendatang.</em>
-                                </span>
+                                <div class="eval-note text-justify">
+                                    <div class="font-weight-bold mb-1 text-danger" style="font-size: 0.85rem;">Dokumen Wajib Belum
+                                        Lengkap:</div>
+                                    <div class="eval-item mb-1">- <strong>{{ implode(', ', $res->missing_docs) }}</strong></div>
+                                    <div class="mt-2 text-muted" style="font-size: 0.8rem;"><em>Rekomendasi: Segera lengkapi dokumen
+                                            legalitas untuk mengikuti kurasi periode berikutnya.</em></div>
+                                </div>
                             @else
-                                <div class="text-warning font-weight-bold small mb-1">GAGAL TAHAP TEKNIS (SKOR: {{ number_format($res->total_score, 3) }})</div>
-                                <span class="eval-note text-justify">
-                                    Aspek yang perlu ditingkatkan:
+                                <div class="eval-note text-justify">
+                                    <div class="font-weight-bold mb-1 text-danger" style="font-size: 0.85rem;">Aspek yang perlu
+                                        ditingkatkan:</div>
                                     @foreach($res->evaluations as $eval)
-                                        <span class="eval-item">- {{ $eval['kriteria'] }}, saat ini produk belum memenuhi <strong>"{{ $eval['target_desc'] }}"</strong>.</span>
+                                        <div class="eval-item mb-1">- <strong>{{ $eval['kriteria'] }}</strong>: Belum mencapai standar
+                                            <!-- (seharusnya: <em>{{ $eval['target_desc'] }}</em>) -->
+                                        </div>
                                     @endforeach
-                                    <em>Rekomendasi: Produk ini memiliki potensi besar. Kami menyarankan peningkatan kualitas pada kriteria di atas agar memiliki daya saing yang lebih tinggi pada periode kurasi selanjutnya.</em>
-                                </span>
+                                    <div class="mt-2 text-muted" style="font-size: 0.8rem;"><em>Rekomendasi: Tingkatkan kualitas
+                                            pada aspek di atas agar dapat bersaing di periode kurasi berikutnya.</em></div>
+                                </div>
                             @endif
                         </td>
                     </tr>
@@ -132,11 +203,32 @@
             @endforeach
             @if($noTidakLolos == 1)
                 <tr>
-                    <td colspan="4" class="text-center text-muted font-italic">Seluruh produk dinyatakan lolos kurasi.</td>
+                    <td colspan="5" class="text-center text-muted font-italic">Seluruh produk memenuhi standar dasar kurasi.
+                    </td>
                 </tr>
             @endif
         </tbody>
     </table>
+
+    <div class="mt-4 p-3 border rounded bg-light" style="font-size: 0.85rem; page-break-inside: avoid;">
+        <h6 class="font-weight-bold mb-2">Keterangan Status Penilaian:</h6>
+        <div class="row">
+            <div class="col-4">
+                <strong>1. Lolos:</strong><br>
+                Produk direkomendasikan sebagai siap masuk retail.
+            </div>
+            <div class="col-4 border-left border-right">
+                <strong>2. Lolos Bersyarat:</strong><br>
+                - UMKM melakukan perbaikan produk pada kriteria tertentu.<br>
+                - Kurator melakukan verifikasi perbaikan secara terbatas.
+            </div>
+            <div class="col-4">
+                <strong>3. Tidak Lolos:</strong><br>
+                - UMKM melakukan perbaikan menyeluruh.<br>
+                - Produk mengikuti kurasi ulang penuh.
+            </div>
+        </div>
+    </div>
 
     <div class="mt-5 pt-4">
         <div style="display: flex; justify-content: flex-end;">
@@ -150,9 +242,10 @@
     </div>
 
     <script>
-        window.onload = function() {
+        window.onload = function () {
             // window.print();
         }
     </script>
 </body>
+
 </html>

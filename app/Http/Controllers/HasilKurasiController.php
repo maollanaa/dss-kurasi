@@ -17,7 +17,7 @@ class HasilKurasiController extends Controller
     public function index()
     {
         $user = Auth::user();
-        
+
         $query = PeriodeKurasi::withCount('periodeAlternatif')
             ->where('status_kurasi', 'selesai')
             ->orderBy('tanggal_kurasi', 'desc');
@@ -38,7 +38,7 @@ class HasilKurasiController extends Controller
     public function detail($id)
     {
         $data = $this->prepareDetailData($id);
-        
+
         if ($data instanceof \Illuminate\Http\RedirectResponse) {
             return $data;
         }
@@ -52,7 +52,7 @@ class HasilKurasiController extends Controller
     public function cetak($id)
     {
         $data = $this->prepareDetailData($id);
-        
+
         if ($data instanceof \Illuminate\Http\RedirectResponse) {
             return $data;
         }
@@ -90,6 +90,7 @@ class HasilKurasiController extends Controller
         foreach ($periode->periodeAlternatif as $pa) {
             $totalScore = 0;
             $hasNegativeGap = false;
+            $minGap = 0;
             $evaluations = [];
             $breakdown = [];
 
@@ -104,7 +105,10 @@ class HasilKurasiController extends Controller
 
                 if ($gap < 0) {
                     $hasNegativeGap = true;
-                    
+                    if ($gap < $minGap) {
+                        $minGap = $gap;
+                    }
+
                     // Ambil deskripsi skala untuk target nilai
                     $targetScale = $k->scales->where('nilai_skala', $nilaiTarget)->first();
                     $targetDesc = $targetScale ? $targetScale->deskripsi_skala : 'Standar target belum tercapai';
@@ -137,21 +141,35 @@ class HasilKurasiController extends Controller
             $legalitas = $pa->alternatif->legalitas;
             $missingDocs = [];
             $isLolosLegalitas = $legalitas ? $legalitas->lolos_filter : true;
-            
+
             if ($legalitas && !$legalitas->lolos_filter) {
-                if (!$legalitas->is_nib) $missingDocs[] = 'NIB';
+                if (!$legalitas->is_nib)
+                    $missingDocs[] = 'NIB';
                 if (!$legalitas->is_bpom && !$legalitas->is_sp_pirt) {
                     $missingDocs[] = 'BPOM / SP-PIRT';
                 }
-                if (!$legalitas->is_sertifikat_halal) $missingDocs[] = 'Sertifikat Halal';
+                if (!$legalitas->is_sertifikat_halal)
+                    $missingDocs[] = 'Sertifikat Halal';
                 $totalScore = 0;
+            }
+
+            // Tentukan Status Lolos
+            if (!$isLolosLegalitas) {
+                $statusLolos = 'tidak_lolos';
+            } elseif (!$hasNegativeGap) {
+                $statusLolos = 'lolos';
+            } elseif ($totalScore >= 4.5 && $minGap >= -1) {
+                $statusLolos = 'lolos_bersyarat';
+            } else {
+                $statusLolos = 'tidak_lolos';
             }
 
             $results[] = (object) [
                 'pa' => $pa,
                 'alternatif' => $pa->alternatif,
                 'total_score' => $totalScore,
-                'status_lolos' => (!$hasNegativeGap && $isLolosLegalitas),
+                'status_lolos' => $statusLolos,
+                'min_gap' => $minGap,
                 'evaluations' => $evaluations,
                 'missing_docs' => $missingDocs,
                 'is_lolos_legalitas' => $isLolosLegalitas,
@@ -160,8 +178,9 @@ class HasilKurasiController extends Controller
         }
 
         // 4. Urutkan berdasarkan skor tertinggi (Ranking)
-        usort($results, function($a, $b) {
-            if ($a->total_score == $b->total_score) return 0;
+        usort($results, function ($a, $b) {
+            if ($a->total_score == $b->total_score)
+                return 0;
             return ($a->total_score > $b->total_score) ? -1 : 1;
         });
 
@@ -174,19 +193,19 @@ class HasilKurasiController extends Controller
     private function mapGapToWeight($gap)
     {
         $map = [
-            '0'  => 5,
-            '1'  => 4.5,
+            '0' => 5,
+            '1' => 4.5,
             '-1' => 4,
-            '2'  => 3.5,
+            '2' => 3.5,
             '-2' => 3,
-            '3'  => 2.5,
+            '3' => 2.5,
             '-3' => 2,
-            '4'  => 1.5,
+            '4' => 1.5,
             '-4' => 1,
-            '5'  => 0.5,
+            '5' => 0.5,
             '-5' => 0,
         ];
 
-        return $map[(string)$gap] ?? 0;
+        return $map[(string) $gap] ?? 0;
     }
 }

@@ -86,9 +86,13 @@
                                                         <span class="h6 font-weight-bold text-primary mb-0">{{ number_format($res->total_score, 3) }}</span>
                                                     </td>
                                                     <td class="py-3 text-center">
-                                                        @if($res->status_lolos)
+                                                        @if($res->status_lolos === 'lolos')
                                                             <span class="badge badge-pill badge-success px-3 py-2">
                                                                 <i data-lucide="check-circle" class="mr-1" style="width: 12px; height: 12px;"></i> Lolos
+                                                            </span>
+                                                        @elseif($res->status_lolos === 'lolos_bersyarat')
+                                                            <span class="badge badge-pill badge-warning px-3 py-2">
+                                                                <i data-lucide="alert-circle" class="mr-1" style="width: 12px; height: 12px;"></i> Lolos Bersyarat
                                                             </span>
                                                         @else
                                                             <span class="badge badge-pill badge-danger px-3 py-2">
@@ -259,6 +263,33 @@
                                         </div>
                                     </div>
                                 @endforeach
+                            </div>
+                        </div>
+
+                        {{-- Legenda Status --}}
+                        <div class="card border-0 shadow-sm rounded-lg mt-4">
+                            <div class="card-header bg-white py-3 border-bottom-0">
+                                <h6 class="font-weight-bold text-dark mb-0">Keterangan Status</h6>
+                            </div>
+                            <div class="card-body pt-0">
+                                <div class="mb-3">
+                                    <span class="badge badge-success mb-1">Lolos</span>
+                                    <p class="small text-muted mb-0">Produk direkomendasikan sebagai siap masuk retail.</p>
+                                </div>
+                                <div class="mb-3">
+                                    <span class="badge badge-warning mb-1">Lolos Bersyarat</span>
+                                    <ul class="pl-3 mb-0 small text-muted">
+                                        <li>UMKM melakukan perbaikan produk pada kriteria tersebut.</li>
+                                        <li>Kurator melakukan verifikasi perbaikan secara terbatas.</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <span class="badge badge-danger mb-1">Tidak Lolos</span>
+                                    <ul class="pl-3 mb-0 small text-muted">
+                                        <li>UMKM melakukan perbaikan menyeluruh.</li>
+                                        <li>Produk mengikuti kurasi ulang penuh.</li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>
